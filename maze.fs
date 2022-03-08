@@ -19,29 +19,27 @@ variable seed
 
 \ number of rooms to create
 10 constant #rooms
+#rooms square constant #grid
 
 \ occupancy grid to check free space
-CREATE grid #rooms square allot
+CREATE grid #grid allot
+
+: occupy 1 swap c! ;
+: is-occupied? c@ 1 = ;
 
 : xy>grid ( x y -- addr )
   #rooms * + grid + ;
-: grid>xy ( addr -- x y )
-  grid - #rooms /mod ;
 
-: in-range? ( x y -- f )
-  2dup
-      -1 >     swap
-      -1 > and swap
-  #rooms < and swap
-  #rooms < and ;
+: in-range? ( addr -- f )
+  dup [ grid 1- ]L >
+  swap [ grid #grid + ]L <
+  and ;
 
-: occupy xy>grid 1 swap c! ;
-: is-occupied? xy>grid c@ 1 = ;
-: is-free?
-  2dup in-range? if
+: is-free? ( addr -- f )
+  dup in-range? if
     is-occupied? invert
   else
-    2drop false
+    drop false
   then ;
 
 \ list with push and peek
@@ -56,45 +54,44 @@ create roomlist #rooms cells allot
   cells roomlist + @ ;
 
 \ room utils
-: rand-xy ( -- x y )
-  #rooms random #rooms random ;
+: rand-grid ( -- addr )
+  #grid random grid + ;
 
-: nesw ( x y d -- x2 y2 )
+: nesw ( addr1 dir - addr2 )
   case
-    0 of 1- endof
-    1 of swap 1+ swap endof
-    2 of 1+ endof
-    3 of swap 1- swap endof
+    0 of #rooms - endof
+    1 of 1+ endof
+    2 of #rooms + endof
+    3 of 1- endof
   endcase ;
 
 \ demo
 
 : make-and-show
   0 length !
-  grid [ #rooms square ]L erase
+  grid #grid erase
 
   \ first room
-  rand-xy
-  2dup occupy
-  xy>grid push
+  rand-grid
+  dup occupy
+  push
 
   #rooms 1 do
-    length @ random peek  \ addr
-    grid>xy  \ x y
-    4 random nesw  \ x2 y2
-    2dup is-free? if
-      2dup occupy
-      xy>grid push
+    length @ random peek \ addr
+    4 random nesw  \ addr2
+    dup is-free? if
+      dup occupy
+      push
       1
     else
-      2drop
+      drop
       0
     then
   +loop
 
   #rooms 0 do
     #rooms 0 do
-      I J is-occupied? if ." X" else ." ." then
+      I J xy>grid is-occupied? if ." X" else ." ." then
     loop
     cr
   loop ;

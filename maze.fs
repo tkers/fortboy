@@ -1,7 +1,3 @@
-require ibm-font.fs
-require term.fs
-require random.fs
-
 \ utils
 :m square dup * ;
 
@@ -83,10 +79,3 @@ create roomlist #rooms cells allot
     loop
     cr
   loop ;
-
-: main
-  install-font
-  init-term
-  1234 seed !
-  make-and-show
-  bye ;

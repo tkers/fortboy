@@ -1,6 +1,3 @@
-require ibm-font.fs
-require term.fs
-require input.fs
 require compat.fs
 
 20 constant max-line
@@ -24,16 +21,4 @@ variable lineno
     r> /string
   repeat type cr ;
 
-: strip-nl ( buf len -- )
-  bounds do
-    I c@ 10 = if bl I c! then
-  loop ;
-
-: main
-  install-font
-  init-term
-  init-input
-  s" You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark chimney leads down and to the east is a small window which is open.\nOn the table is an elongated brown sack, smelling of hot peppers.\nA bottle is sitting on the table.\nThe glass bottle contains:\nA quantity of water"
-  2dup strip-nl
-  .wrapped
-  bye ;
+:m w" postpone s" postpone .wrapped ; immediate

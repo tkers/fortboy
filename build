@@ -1,1 +1,1 @@
-docker run --rm -v "$PWD":/data amshackers/gbforth maze.fs maze.gb
+docker run --rm -v "$PWD":/data amshackers/gbforth game.fs game.gb

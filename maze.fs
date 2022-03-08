@@ -1,21 +1,9 @@
-\ gbforth random
-: xorshift ( n -- n )
-  dup 7 lshift xor
-  dup 9 rshift xor
-  dup 8 lshift xor ;
-
-variable seed
-
-: rnd ( -- n )
-  seed @
-  xorshift
-  dup seed ! ;
-
-: random ( n -- n )
-  rnd swap mod ;
+require ibm-font.fs
+require term.fs
+require random.fs
 
 \ utils
-: square dup * ;
+:m square dup * ;
 
 \ number of rooms to create
 10 constant #rooms
@@ -97,8 +85,8 @@ create roomlist #rooms cells allot
   loop ;
 
 : main
-  utime drop seed !
+  install-font
+  init-term
+  1234 seed !
   make-and-show
   bye ;
-
-main

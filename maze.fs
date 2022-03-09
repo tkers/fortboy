@@ -9,24 +9,16 @@ require struct.fs
 
 ROM
 struct
-  cell field room-grid
-  cell field room-index
-  2 cells field room-name
-  2 cells field room-description
-  cell field room-north
-  cell field room-east
-  cell field room-south
-  cell field room-west
+  cell field room>grid
+  cell field room>index
+  2 cells field room>name
+  2 cells field room>description
+  cell field room>north
+  cell field room>east
+  cell field room>south
+  cell field room>west
 end-struct room%
 RAM
-
-: rooms room% * ;
-:m rooms room% * ;
-
-\ list with push and peek
-variable roomlist-length
-create roomlist #rooms rooms allot
-: next-room-index roomlist-length @ 1+ ;
 
 : ix>name
   case
@@ -56,22 +48,35 @@ create roomlist #rooms rooms allot
     10 of s" You have entered a low cave with passages leading northwest and east. There are old engravings on the walls here."   endof
   endcase ;
 
-: push ( xy -- )
-  roomlist roomlist-length @ rooms + >r
-  next-room-index r@ room-index !
-  next-room-index ix>name r@ room-name 2!
-  next-room-index ix>desc r@ room-description 2!
-  r@ room-grid !
+
+: rooms room% * ;
+:m rooms room% * ;
+
+\ list with push and peek
+variable roomlist-length
+create roomlist #rooms rooms allot
+: next-room-index roomlist-length @ 1+ ;
+: next-room-addr roomlist-length @ rooms roomlist + ;
+: last-room-index roomlist-length @ ;
+
+: push-room ( xy -- )
+  next-room-addr >r
+  next-room-index         r@ room>index !
+  next-room-index ix>name r@ room>name 2!
+  next-room-index ix>desc r@ room>description 2!
+                   ( xy ) r@ room>grid !
   rdrop
   1 roomlist-length +! ;
 
-: seek ( u -- x )
-  rooms roomlist + ;
+: ix>room ( u -- x )
+  1- rooms roomlist + ;
+
+: rand-room-ix ( -- u ) roomlist-length @ random 1+ ;
 
 \ occupancy grid to check free space
 CREATE grid #grid allot
 
-: occupy next-room-index swap c! ;
+: occupy-grid next-room-index swap c! ;
 : is-occupied? c@ 0 <> ;
 
 : xy>grid ( x y -- addr )
@@ -90,18 +95,16 @@ CREATE grid #grid allot
   then ;
 
 \ room utils
-: rand-grid ( -- addr )
+: rand-grid ( -- coord )
   #grid random grid + ;
 
-: nesw ( addr1 dir - addr2 )
+: nesw ( coord1 dir -- coord2 )
   case
     0 of #rooms - endof
     1 of 1+ endof
     2 of #rooms + endof
     3 of 1- endof
   endcase ;
-
-\ demo
 
 \ variable first-room
 variable current-room
@@ -111,24 +114,23 @@ variable current-room
 
   \ first room
   rand-grid
-  dup occupy
-      push
+  dup occupy-grid
+  push-room
 
   \ grow
   #rooms 1 do
-    roomlist-length @ random \ ix
-    seek room-grid @ \ addr
-    4 random nesw  \ addr2
-    dup is-free? if
-      dup occupy
-          push
+    rand-room-ix \ ix
+    ix>room room>grid @ \ coord
+    4 random nesw  \ ix coord2
+    dup is-free? if \ ix coord2
+      dup occupy-grid
+      push-room
       1
     else
       drop
       0
     then
   +loop
-
 
   #rooms 0 do
     #rooms 0 do
@@ -147,15 +149,15 @@ variable current-room
 
   key drop
 
-  0 current-room !
+  1 current-room !
 
   begin
     page
 
-    current-room @ seek
+    current-room @ ix>room
 
-    ." ~~ in room " dup room-name 2@ type space ." ~~" cr
-    dup room-description 2@ .wrapped
+    ." ~~ in room " dup room>name 2@ type space ." ~~" cr
+    dup room>description 2@ .wrapped
     cr
     ." Doors:" cr
     dup @ 0 nesw is-occupied? if ." - North" cr then
@@ -166,7 +168,7 @@ variable current-room
     ."  Where to next?" cr
     ." (use arrow keys)" cr
 
-    room-grid @
+    room>grid @
     key case
       k-up    of 0 endof
       k-right of 1 endof
@@ -175,6 +177,6 @@ variable current-room
                  4
     endcase nesw
 
-    dup is-occupied? if c@ 1- current-room ! page else drop then
+    dup is-occupied? if c@ current-room ! page else drop then
   again
  ;

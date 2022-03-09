@@ -132,11 +132,13 @@ CREATE grid #grid allot
   r> flip-nesw room>nesw ! ;
 
 
-\ variable first-room
 variable current-room
 : make-and-show
   0 roomlist-length !
-  grid #grid 0 fill
+
+  \ clear the grid & room data
+  grid #grid erase
+  roomlist #rooms rooms erase
 
   \ first room
   rand-grid

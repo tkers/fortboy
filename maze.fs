@@ -23,11 +23,40 @@ RAM
 : rooms room% * ;
 :m rooms room% * ;
 
+\ list with push and peek
+variable roomlist-length
+create roomlist #rooms rooms allot
+: next-room-index roomlist-length @ 1+ ;
+
+: ix>name
+  case
+     1 of s" one"   endof
+     2 of s" two"   endof
+     3 of s" three" endof
+     4 of s" four"  endof
+     5 of s" five"  endof
+     6 of s" six"   endof
+     7 of s" seven" endof
+     8 of s" eight" endof
+     9 of s" nine"  endof
+    10 of s" ten"   endof
+  endcase ;
+
+: push ( xy -- )
+  roomlist roomlist-length @ rooms + >r
+  next-room-index r@ room-index !
+  next-room-index ix>name r@ room-name 2!
+  r@ room-grid !
+  rdrop
+  1 roomlist-length +! ;
+
+: seek ( u -- x )
+  rooms roomlist + ;
 
 \ occupancy grid to check free space
 CREATE grid #grid allot
 
-: occupy c! ;
+: occupy next-room-index swap c! ;
 : is-occupied? c@ 0 <> ;
 
 : xy>grid ( x y -- addr )
@@ -44,35 +73,6 @@ CREATE grid #grid allot
   else
     drop false
   then ;
-
-\ list with push and peek
-variable roomlist-length
-create roomlist #rooms rooms allot
-
-: ix>name
-  case
-     1 of s" one"   endof
-     2 of s" two"   endof
-     3 of s" three" endof
-     4 of s" four"  endof
-     5 of s" five"  endof
-     6 of s" six"   endof
-     7 of s" seven" endof
-     8 of s" eight" endof
-     9 of s" nine"  endof
-    10 of s" ten"   endof
-  endcase ;
-
-: push ( xy i -- )
-  roomlist roomlist-length @ rooms + >r
-  dup r@ room-index !
-  ix>name r@ room-name 2!
-  r@ room-grid !
-  r> drop
-  1 roomlist-length +! ;
-
-: seek ( u -- x )
-  rooms roomlist + ;
 
 \ room utils
 : rand-grid ( -- addr )
@@ -96,15 +96,17 @@ variable current-room
 
   \ first room
   rand-grid
-  ( roomlist-length @ 1+ ) 1 over occupy
-  1 push
+  dup occupy
+      push
 
+  \ grow
   #rooms 1 do
-    roomlist-length @ random seek room-grid @ \ addr
+    roomlist-length @ random \ ix
+    seek room-grid @ \ addr
     4 random nesw  \ addr2
     dup is-free? if
-      I 1+ over occupy
-      I 1+ push
+      dup occupy
+          push
       1
     else
       drop

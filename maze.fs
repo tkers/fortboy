@@ -193,23 +193,23 @@ variable current-room
 
     cr
     ." Doors:" cr
-    dup @ 0 nesw is-occupied? if ." - North" cr then
-    dup @ 1 nesw is-occupied? if ." - East" cr then
-    dup @ 2 nesw is-occupied? if ." - South" cr then
-    dup @ 3 nesw is-occupied? if ." - West" cr then
+    dup room>north @ 0 <> if ." - North" cr then
+    dup room>east  @ 0 <> if ." - East"  cr then
+    dup room>south @ 0 <> if ." - South" cr then
+    dup room>west  @ 0 <> if ." - West"  cr then
+
     cr
     ."  Where to next?" cr
     ." (use arrow keys)" cr
 
-    room>grid @
     key case
       k-up    of 0 endof
       k-right of 1 endof
       k-down  of 2 endof
       k-left  of 3 endof
-                 4
-    endcase nesw
+                 0 swap
+    endcase room>nesw @
 
-    dup is-occupied? if c@ current-room ! page else drop then
+    dup 0 <> if current-room ! page else drop then
   again
  ;

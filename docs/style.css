@@ -1,0 +1,21 @@
+body {
+  text-align: center;
+  color: #88c070;
+  padding-top: 16px;
+}
+
+canvas {
+  margin-top: 8px;
+  height: 324px;
+  border: 1px solid #081820;
+  image-rendering: pixelated;
+}
+
+a {
+  font-family: monospace;
+  color: #306850;
+}
+
+a:hover {
+  text-decoration: none;
+}

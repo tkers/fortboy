@@ -106,6 +106,32 @@ CREATE grid #grid allot
     3 of 1- endof
   endcase ;
 
+
+: flip-nesw
+  case
+    0 of 2 endof
+    1 of 3 endof
+    2 of 0 endof
+    3 of 1 endof
+  endcase ;
+
+: room>nesw
+  case
+    0 of room>north endof
+    1 of room>east endof
+    2 of room>south endof
+    3 of room>west endof
+  endcase ;
+
+: dig-tunnel  ( ix1 dir ix2 -- )
+  swap >r \ ix1 ix2
+  2dup \ ix1 ix2 ix1 ix2
+  swap ix>room \ ix1 ix2 ix2 a1
+  r@ room>nesw ! \ ix1 ix2
+  ix>room \ ix1 a2
+  r> flip-nesw room>nesw ! ;
+
+
 \ variable first-room
 variable current-room
 : make-and-show
@@ -119,15 +145,16 @@ variable current-room
 
   \ grow
   #rooms 1 do
-    rand-room-ix \ ix
-    ix>room room>grid @ \ coord
-    4 random nesw  \ ix coord2
-    dup is-free? if \ ix coord2
+    rand-room-ix dup \ ix ix
+    ix>room room>grid @ \ ix coord
+    4 random tuck nesw  \ ix dir coord2
+    dup is-free? if \ ix dir coord2
       dup occupy-grid
-      push-room
+      push-room \ ix dir
+      last-room-index dig-tunnel
       1
     else
-      drop
+      drop drop drop
       0
     then
   +loop
@@ -157,7 +184,13 @@ variable current-room
     current-room @ ix>room
 
     ." ~~ in room " dup room>name 2@ type space ." ~~" cr
-    dup room>description 2@ .wrapped
+    \ dup room>description 2@ .wrapped
+
+    dup room>north @ . cr
+    dup room>east @ . cr
+    dup room>south @ . cr
+    dup room>west @ . cr
+
     cr
     ." Doors:" cr
     dup @ 0 nesw is-occupied? if ." - North" cr then

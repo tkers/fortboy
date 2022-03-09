@@ -22,16 +22,16 @@ RAM
 
 : ix>name
   case
-     1 of s" one"   endof
-     2 of s" two"   endof
-     3 of s" three" endof
-     4 of s" four"  endof
-     5 of s" five"  endof
-     6 of s" six"   endof
-     7 of s" seven" endof
-     8 of s" eight" endof
-     9 of s" nine"  endof
-    10 of s" ten"   endof
+     1 of s" 1. South of House"     endof
+     2 of s" 2. Behind House"       endof
+     3 of s" 3. Kitchen"            endof
+     4 of s" 4. Living Room"        endof
+     5 of s" 5. Dark Cellar"        endof
+     6 of s" 6. Chasm Edge"         endof
+     7 of s" 7. Art Gallery"        endof
+     8 of s" 8. Attic"              endof
+     9 of s" 9. Small Room"         endof
+    10 of s" 10. Engravings Cave"   endof
   endcase ;
 
 : ix>desc
@@ -183,24 +183,14 @@ variable current-room
 
     current-room @ ix>room
 
-    ." ~~ in room " dup room>name 2@ type space ." ~~" cr
-    \ dup room>description 2@ .wrapped
+    dup room>name        2@ type cr cr
+    dup room>description 2@ .wrapped cr
 
-    dup room>north @ . cr
-    dup room>east @ . cr
-    dup room>south @ . cr
-    dup room>west @ . cr
-
-    cr
     ." Doors:" cr
     dup room>north @ 0 <> if ." - North" cr then
     dup room>east  @ 0 <> if ." - East"  cr then
     dup room>south @ 0 <> if ." - South" cr then
     dup room>west  @ 0 <> if ." - West"  cr then
-
-    cr
-    ."  Where to next?" cr
-    ." (use arrow keys)" cr
 
     key case
       k-up    of 0 endof

@@ -4,8 +4,8 @@ require term.fs
 require random.fs
 require input.fs
 
-require ./maze.fs
 require ./wrap.fs
+require ./maze.fs
 
 : main
   install-font

@@ -11,8 +11,8 @@ ROM
 struct
   cell field room-grid
   cell field room-index
-  cell field room-name
-  cell field room-description
+  2 cells field room-name
+  2 cells field room-description
   cell field room-north
   cell field room-east
   cell field room-south
@@ -42,10 +42,25 @@ create roomlist #rooms rooms allot
     10 of s" ten"   endof
   endcase ;
 
+: ix>desc
+  case
+     1 of s" You are facing the south side of a white house. There is no door here, and all the windows are boarded."   endof
+     2 of s" You are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar."   endof
+     3 of s" You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food." endof
+     4 of s" You are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the center of the room."  endof
+     5 of s" You are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable."  endof
+     6 of s" You are on the east edge of a chasm, the bottom of which cannot be seen. "   endof
+     7 of s" This is an art gallery. Most of the paintings have been stolen by vandals with exceptional taste. The vandals left through either the north or west exits." endof
+     8 of s" This is the attic. The only exit is a stairway leading down." endof
+     9 of s" This is a small room with passages to the east and south and a forbidding hole leading west."  endof
+    10 of s" You have entered a low cave with passages leading northwest and east. There are old engravings on the walls here."   endof
+  endcase ;
+
 : push ( xy -- )
   roomlist roomlist-length @ rooms + >r
   next-room-index r@ room-index !
   next-room-index ix>name r@ room-name 2!
+  next-room-index ix>desc r@ room-description 2!
   r@ room-grid !
   rdrop
   1 roomlist-length +! ;
@@ -140,6 +155,7 @@ variable current-room
     current-room @ seek
 
     ." ~~ in room " dup room-name 2@ type space ." ~~" cr
+    dup room-description 2@ .wrapped
     cr
     ." Doors:" cr
     dup @ 0 nesw is-occupied? if ." - North" cr then

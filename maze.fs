@@ -229,52 +229,62 @@ variable curr-depth
   loop ;
 
 variable current-room
+
+: look-room ( -- )
+  current-room @ ix>room
+
+  dup room>name        2@ type cr cr
+  dup room>description 2@ pad place
+
+  dup room>item 2@
+  dup 0 <> if
+    bl pad cappend
+    s" You spot " pad append
+    ( item-addr item-u ) pad append
+    bl pad cappend
+    s" laying on the floor." pad append
+  else 2drop then
+
+  bl pad cappend
+  s" You can see " pad append
+
+  0 swap
+  dup room>north c@ 0 <> if swap 1+ swap then
+  dup room>east  c@ 0 <> if swap 1+ swap then
+  dup room>south c@ 0 <> if swap 1+ swap then
+  dup room>west  c@ 0 <> if swap 1+ swap then
+
+  swap 1 = if s" a door " else s" doors " then pad append
+  s" leading to the" pad append
+
+  dup room>north c@ 0 <> if s"  North," pad append then
+  dup room>east  c@ 0 <> if s"  East,"  pad append then
+  dup room>south c@ 0 <> if s"  South," pad append then
+  dup room>west  c@ 0 <> if s"  West,"  pad append then
+  [char] . pad count 1- + c! \ replace last space with dot
+
+  pad count .wrapped
+  drop ;
+
+: go-room ( dir -- )
+  current-room @ ix>room
+  swap room>nesw c@
+  ?dup 0 <> if
+    current-room ! page
+  then ;
+
+: key>action
+  case
+    k-up    of 0 go-room endof
+    k-right of 1 go-room endof
+    k-down  of 2 go-room endof
+    k-left  of 3 go-room endof
+  endcase ;
+
 : play-maze
   1 current-room !
   begin
     page
-
-    current-room @ ix>room
-
-    dup room>name        2@ type cr cr
-    dup room>description 2@ pad place
-
-    dup room>item 2@
-    dup 0 <> if
-      bl pad cappend
-      s" You spot " pad append
-      ( item-addr item-u ) pad append
-      bl pad cappend
-      s" laying on the floor." pad append
-    else 2drop then
-
-    bl pad cappend
-    s" You can see " pad append
-
-    0 swap
-    dup room>north c@ 0 <> if swap 1+ swap then
-    dup room>east  c@ 0 <> if swap 1+ swap then
-    dup room>south c@ 0 <> if swap 1+ swap then
-    dup room>west  c@ 0 <> if swap 1+ swap then
-
-    swap 1 = if s" a door " else s" doors " then pad append
-    s" leading to the" pad append
-
-    dup room>north c@ 0 <> if s"  North," pad append then
-    dup room>east  c@ 0 <> if s"  East,"  pad append then
-    dup room>south c@ 0 <> if s"  South," pad append then
-    dup room>west  c@ 0 <> if s"  West,"  pad append then
-    [char] . pad count 1- + c! \ replace last space with dot
-
-    pad count .wrapped
-
-    key case
-      k-up    of 0 endof
-      k-right of 1 endof
-      k-down  of 2 endof
-      k-left  of 3 endof
-                 0 swap
-    endcase room>nesw c@
-
-    dup 0 <> if current-room ! page else drop then
+    look-room
+    key key>action
   again ;

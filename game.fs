@@ -1,3 +1,6 @@
+title: GrueBoy
+makercode: TK
+
 require textmachine-font.fs
 
 require term.fs

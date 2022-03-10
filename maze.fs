@@ -239,6 +239,9 @@ create inventory 20 chars allot
   loop
   key drop ;
 
+: .alert ( c-addr u -- )
+  page .wrapped key drop ;
+
 : look-room ( -- )
   current-room @ ix>room
 
@@ -293,12 +296,10 @@ create inventory 20 chars allot
     dup 2@ inventory place
     0 0 rot 2! \ clear room item
 
-    page
-    pad count .wrapped
-    key drop
+    pad count .alert
   else
     2drop drop
-    page w" There is nothing you can take from this room." key drop
+    s" There is nothing you can take from this room." .alert
   then ;
 
 : drop-item
@@ -311,13 +312,10 @@ create inventory 20 chars allot
     current-room @ ix>room room>item 2!
     0 inventory !
 
-    page
-    pad count .wrapped
-    key drop
+    pad count .alert
   else
-    page w" You are not carrying any items right now." key drop
-  then
-;
+    s" You are not carrying any items right now." .alert
+  then ;
 
 : key>action
   case

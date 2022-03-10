@@ -18,6 +18,7 @@ struct
   1 chars field room>east
   1 chars field room>south
   1 chars field room>west
+  2 cells field room>item
   cell field room>aux
 end-struct room%
 RAM
@@ -212,6 +213,11 @@ variable curr-depth
   LOOP
   ix>room room>description s" You Won!" rot 2!
 
+  \ add item to random room (except the starting room)
+  s" a rusty key"
+  #rooms 1- random 2 +
+  ix>room room>item 2!
+
   ;
 
 : show-maze
@@ -232,6 +238,15 @@ variable current-room
 
     dup room>name        2@ type cr cr
     dup room>description 2@ pad place
+
+    dup room>item 2@
+    dup 0 <> if
+      bl pad cappend
+      s" You spot " pad append
+      ( item-addr item-u ) pad append
+      bl pad cappend
+      s" laying on the floor." pad append
+    else 2drop then
 
     bl pad cappend
     s" You can see " pad append

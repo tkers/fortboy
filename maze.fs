@@ -1,5 +1,6 @@
 require struct.fs
 require stack.fs
+require ./strings.fs
 
 \ utils
 :m square dup * ;
@@ -230,13 +231,27 @@ variable current-room
     current-room @ ix>room
 
     dup room>name        2@ type cr cr
-    dup room>description 2@ .wrapped cr
+    dup room>description 2@ pad place
 
-    ." Doors:" cr
-    dup room>north c@ 0 <> if ." - North" cr then
-    dup room>east  c@ 0 <> if ." - East"  cr then
-    dup room>south c@ 0 <> if ." - South" cr then
-    dup room>west  c@ 0 <> if ." - West"  cr then
+    bl pad cappend
+    s" You can see " pad append
+
+    0 swap
+    dup room>north c@ 0 <> if swap 1+ swap then
+    dup room>east  c@ 0 <> if swap 1+ swap then
+    dup room>south c@ 0 <> if swap 1+ swap then
+    dup room>west  c@ 0 <> if swap 1+ swap then
+
+    swap 1 = if s" a door " else s" doors " then pad append
+    s" leading to the" pad append
+
+    dup room>north c@ 0 <> if s"  North," pad append then
+    dup room>east  c@ 0 <> if s"  East,"  pad append then
+    dup room>south c@ 0 <> if s"  South," pad append then
+    dup room>west  c@ 0 <> if s"  West,"  pad append then
+    [char] . pad count 1- + c! \ replace last space with dot
+
+    pad count .wrapped
 
     key case
       k-up    of 0 endof

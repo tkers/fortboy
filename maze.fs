@@ -19,6 +19,7 @@ struct
   1 chars field room>south
   1 chars field room>west
   2 cells field room>item
+  1 chars field room>final
   cell field room>aux
 end-struct room%
 RAM
@@ -206,12 +207,12 @@ variable curr-depth
     2dup < if nip else drop then
   LOOP
 
-  \ get deepest room
+  \ get deepest room and mark as final exit
   #rooms 1+ 2 DO
     I ix>room room>aux @
     over = if I swap drop leave then
   LOOP
-  ix>room room>description s" You Won!" rot 2!
+  ix>room room>final 1 swap c!
 
   \ add item to random room (except the starting room)
   s" a rusty key"
@@ -293,5 +294,9 @@ variable current-room
   begin
     page
     look-room
+    current-room @ ix>room room>final c@ 0 <> if
+      cr cr cr
+      ."   Hooray, you win!"
+    then
     key key>action
   again ;

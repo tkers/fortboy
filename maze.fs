@@ -223,6 +223,7 @@ variable curr-depth
   ;
 
 variable current-room
+create inventory 20 chars allot
 
 : show-map
   page
@@ -281,17 +282,57 @@ variable current-room
     current-room ! page
   then ;
 
+: take-item ( -- )
+  current-room @ ix>room room>item
+  dup 2@ dup 0 <> if
+    s" You take " pad place
+    pad append
+    bl pad cappend
+    s" from the room." pad append
+
+    dup 2@ inventory place
+    0 0 rot 2! \ clear room item
+
+    page
+    pad count .wrapped
+    key drop
+  else
+    2drop drop
+    page w" There is nothing you can take from this room." key drop
+  then ;
+
+: drop-item
+  inventory @ 0 <> if
+    s" You drop " pad place
+    inventory count 2dup pad append
+    bl pad cappend
+    s" on the floor." pad append
+
+    current-room @ ix>room room>item 2!
+    0 inventory !
+
+    page
+    pad count .wrapped
+    key drop
+  else
+    page w" You are not carrying any items right now." key drop
+  then
+;
+
 : key>action
   case
     k-up     of 0 go-room endof
     k-right  of 1 go-room endof
     k-down   of 2 go-room endof
     k-left   of 3 go-room endof
+    k-a      of take-item endof
+    k-b      of drop-item endof
     k-select of  show-map endof
   endcase ;
 
 : play-maze
   1 current-room !
+  inventory 20 chars erase
   begin
     page
     look-room

@@ -220,15 +220,21 @@ variable curr-depth
 
   ;
 
-: show-maze
+variable current-room
+
+: show-map
+  page
   #rooms 0 do
     #rooms 0 do
-      I J xy>grid is-occupied? if ." X" else ." ." then
+      I J xy>grid c@ case
+        0 of ." ." endof
+        current-room @ of ." i" endof
+        ." X"
+      endcase
     loop
     cr
-  loop ;
-
-variable current-room
+  loop
+  key drop ;
 
 : look-room ( -- )
   current-room @ ix>room
@@ -279,7 +285,7 @@ variable current-room
     k-right  of 1 go-room endof
     k-down   of 2 go-room endof
     k-left   of 3 go-room endof
-    k-select of page show-maze key drop endof
+    k-select of  show-map endof
   endcase ;
 
 : play-maze

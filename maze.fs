@@ -10,14 +10,13 @@ require stack.fs
 
 ROM
 struct
-  cell field room>grid
-  cell field room>index
+  cell field room>coord
   2 cells field room>name
   2 cells field room>description
-  cell field room>north
-  cell field room>east
-  cell field room>south
-  cell field room>west
+  1 chars field room>north
+  1 chars field room>east
+  1 chars field room>south
+  1 chars field room>west
   cell field room>aux
 end-struct room%
 RAM
@@ -63,10 +62,9 @@ create roomlist #rooms rooms allot
 
 : push-room ( xy -- )
   next-room-addr >r
-  next-room-index         r@ room>index !
+                   ( xy ) r@ room>coord !
   next-room-index ix>name r@ room>name 2!
   next-room-index ix>desc r@ room>description 2!
-                   ( xy ) r@ room>grid !
   rdrop
   1 roomlist-length +! ;
 
@@ -129,9 +127,9 @@ CREATE grid #grid allot
   swap >r \ ix1 ix2
   2dup \ ix1 ix2 ix1 ix2
   swap ix>room \ ix1 ix2 ix2 a1
-  r@ room>nesw ! \ ix1 ix2
+  r@ room>nesw c! \ ix1 ix2
   ix>room \ ix1 a2
-  r> flip-nesw room>nesw ! ;
+  r> flip-nesw room>nesw c! ;
 
 
 #rooms STACK visit-stack-1
@@ -154,7 +152,7 @@ variable curr-depth
   \ grow
   #rooms 1 do
     rand-room-ix dup \ ix ix
-    ix>room room>grid @ \ ix coord
+    ix>room room>coord @ \ ix coord
     4 random tuck nesw  \ ix dir coord2
     dup is-free? if \ ix dir coord2
       dup occupy-grid
@@ -187,10 +185,10 @@ variable curr-depth
         dup room>aux curr-depth @ swap !
 
         \ add next rooms
-        dup room>north @ dup 0 <> if next-visit push else drop then
-        dup room>east  @ dup 0 <> if next-visit push else drop then
-        dup room>south @ dup 0 <> if next-visit push else drop then
-        dup room>west  @ dup 0 <> if next-visit push else drop then
+        dup room>north c@ dup 0 <> if next-visit push else drop then
+        dup room>east  c@ dup 0 <> if next-visit push else drop then
+        dup room>south c@ dup 0 <> if next-visit push else drop then
+        dup room>west  c@ dup 0 <> if next-visit push else drop then
       then
       drop
     repeat
@@ -235,10 +233,10 @@ variable current-room
     dup room>description 2@ .wrapped cr
 
     ." Doors:" cr
-    dup room>north @ 0 <> if ." - North" cr then
-    dup room>east  @ 0 <> if ." - East"  cr then
-    dup room>south @ 0 <> if ." - South" cr then
-    dup room>west  @ 0 <> if ." - West"  cr then
+    dup room>north c@ 0 <> if ." - North" cr then
+    dup room>east  c@ 0 <> if ." - East"  cr then
+    dup room>south c@ 0 <> if ." - South" cr then
+    dup room>west  c@ 0 <> if ." - West"  cr then
 
     key case
       k-up    of 0 endof
@@ -246,7 +244,7 @@ variable current-room
       k-down  of 2 endof
       k-left  of 3 endof
                  0 swap
-    endcase room>nesw @
+    endcase room>nesw c@
 
     dup 0 <> if current-room ! page else drop then
   again ;

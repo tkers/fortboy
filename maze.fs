@@ -1,6 +1,7 @@
 require struct.fs
 require stack.fs
 require ./strings.fs
+require ./tunes.fs
 
 \ utils
 :m square dup * ;
@@ -297,6 +298,7 @@ variable current-room
     current-room @ ix>room room>final c@ 0 <> if
       cr cr cr
       ."   Hooray, you win!"
+      snd-hooray
     then
     key key>action
   again ;

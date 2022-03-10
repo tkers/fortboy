@@ -132,12 +132,10 @@ CREATE grid #grid allot
   r> flip-nesw room>nesw ! ;
 
 
-variable current-room
-: make-and-show
-  0 roomlist-length !
-
+: gen-maze
   \ clear the grid & room data
   grid #grid erase
+  0 roomlist-length !
   roomlist #rooms rooms erase
 
   \ first room
@@ -159,27 +157,19 @@ variable current-room
       drop drop drop
       0
     then
-  +loop
+  +loop ;
 
+: show-maze
   #rooms 0 do
     #rooms 0 do
       I J xy>grid is-occupied? if ." X" else ." ." then
     loop
     cr
-  loop
+  loop ;
 
-  (
-     ..........
-     x.........
-     xxxxs.....
-     .xxxx.....
-     ..........
-  )
-
-  key drop
-
+variable current-room
+: play-maze
   1 current-room !
-
   begin
     page
 
@@ -203,5 +193,4 @@ variable current-room
     endcase room>nesw @
 
     dup 0 <> if current-room ! page else drop then
-  again
- ;
+  again ;

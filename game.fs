@@ -21,19 +21,8 @@ require ./maze.fs
 
 : main
   init
-
   gen-maze
-  show-maze wait-for-key
-  (
-     ..........
-     x.........
-     xxxxs.....
-     .xxxx.....
-     ..........
-  )
-
-  play-maze
-  bye ;
+  play-maze ;
 
 \ debugging stats
 cr cr

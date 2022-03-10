@@ -275,10 +275,11 @@ variable current-room
 
 : key>action
   case
-    k-up    of 0 go-room endof
-    k-right of 1 go-room endof
-    k-down  of 2 go-room endof
-    k-left  of 3 go-room endof
+    k-up     of 0 go-room endof
+    k-right  of 1 go-room endof
+    k-down   of 2 go-room endof
+    k-left   of 3 go-room endof
+    k-select of page show-maze key drop endof
   endcase ;
 
 : play-maze

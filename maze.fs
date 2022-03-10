@@ -1,4 +1,5 @@
 require struct.fs
+require stack.fs
 
 \ utils
 :m square dup * ;
@@ -17,6 +18,7 @@ struct
   cell field room>east
   cell field room>south
   cell field room>west
+  cell field room>aux
 end-struct room%
 RAM
 
@@ -132,6 +134,12 @@ CREATE grid #grid allot
   r> flip-nesw room>nesw ! ;
 
 
+#rooms STACK visit-stack-1
+#rooms STACK visit-stack-2
+value curr-visit
+value next-visit
+variable curr-depth
+
 : gen-maze
   \ clear the grid & room data
   grid #grid erase
@@ -157,7 +165,55 @@ CREATE grid #grid allot
       drop drop drop
       0
     then
-  +loop ;
+  +loop
+
+  \ floodfill for depth calculation
+  visit-stack-1 clear
+  visit-stack-2 clear
+  visit-stack-1 to curr-visit
+  visit-stack-2 to next-visit
+  0 curr-depth !
+  1 curr-visit push
+
+  begin
+    1 curr-depth +!
+    begin
+      curr-visit empty? invert
+    while
+      curr-visit pop
+      ix>room
+      dup room>aux @ 0 = if
+        \ set depth
+        dup room>aux curr-depth @ swap !
+
+        \ add next rooms
+        dup room>north @ dup 0 <> if next-visit push else drop then
+        dup room>east  @ dup 0 <> if next-visit push else drop then
+        dup room>south @ dup 0 <> if next-visit push else drop then
+        dup room>west  @ dup 0 <> if next-visit push else drop then
+      then
+      drop
+    repeat
+    curr-visit
+    next-visit to curr-visit
+               to next-visit
+  curr-visit empty? until
+
+  \ get deepest level
+  0
+  #rooms 1+ 2 DO
+    I ix>room room>aux @ \ a b
+    2dup < if nip else drop then
+  LOOP
+
+  \ get deepest room
+  #rooms 1+ 2 DO
+    I ix>room room>aux @
+    over = if I swap drop leave then
+  LOOP
+  ix>room room>description s" You Won!" rot 2!
+
+  ;
 
 : show-maze
   #rooms 0 do

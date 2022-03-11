@@ -406,11 +406,37 @@ create inventory 20 chars allot
   dup room>west  c@ 0 <> if s"  West,"  pad append then
   [char] . pad count 1- + c! \ replace last space with dot
 
-  bl pad cappend
-  dup room>lock-north c@ 0 <> if s" The path to the North is blocked." pad append then
-  dup room>lock-east  c@ 0 <> if s" The path to the East is blocked."  pad append then
-  dup room>lock-south c@ 0 <> if s" The path to the South is blocked." pad append then
-  dup room>lock-west  c@ 0 <> if s" The path to the West is blocked."  pad append then
+  dup room>lock-north c@ 0 <> if
+    bl pad cappend
+    s" The path to the North is blocked. You need item #" pad append
+    dup room>lock-north c@ pad #append
+    bl pad cappend
+    s" to continue." pad append
+  then
+
+  dup room>lock-east c@ 0 <> if
+    bl pad cappend
+    s" The path to the East is blocked. You need item #" pad append
+    dup room>lock-east c@ pad #append
+    bl pad cappend
+    s" to continue." pad append
+  then
+
+  dup room>lock-south c@ 0 <> if
+    bl pad cappend
+    s" The path to the South is blocked. You need item #" pad append
+    dup room>lock-south c@ pad #append
+    bl pad cappend
+    s" to continue." pad append
+  then
+
+  dup room>lock-west c@ 0 <> if
+    bl pad cappend
+    s" The path to the West is blocked. You need item #" pad append
+    dup room>lock-west c@ pad #append
+    bl pad cappend
+    s" to continue." pad append
+  then
 
   pad count .wrapped
   drop ;

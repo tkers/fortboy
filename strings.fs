@@ -18,3 +18,12 @@ create pad pad-size allot
 : cappend ( c c-addr )
   dup @ char+ over !
   count 1- chars + ! ;
+
+: #append ( u c-addr )
+  swap
+  dup 0< if
+    over
+    [char] - swap cappend
+    0 swap -
+  then
+  <# #s #> rot append ;

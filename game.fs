@@ -8,6 +8,8 @@ require random.fs
 require input.fs
 require time.fs
 
+variable initial-seed
+
 require ./wrap.fs
 require ./maze.fs
 
@@ -20,7 +22,8 @@ require ./maze.fs
   \ w" Press any key to start!"
   \ wait-for-key page
   \ utime seed ! ;
-  1234 seed ! ;
+  1234 seed !
+  seed @ initial-seed ! ;
 
 : main
   init

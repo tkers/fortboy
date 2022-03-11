@@ -375,6 +375,7 @@ create inventory 20 chars allot
     loop
     cr
   loop
+  cr ." Seed: " initial-seed @ .
   key drop ;
 
 : .alert ( c-addr u -- )

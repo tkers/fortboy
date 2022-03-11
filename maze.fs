@@ -57,7 +57,6 @@ RAM
     10 of s" You have entered a low cave with passages leading northwest and east. There are old engravings on the walls here."   endof
   endcase ;
 
-
 : rooms room% * ;
 :m rooms room% * ;
 
@@ -203,11 +202,19 @@ variable curr-depth
         \ set depth
         dup room>aux curr-depth @ swap !
 
-        \ add next rooms
-        dup room>north c@ dup 0 <> if next-visit push else drop then
-        dup room>east  c@ dup 0 <> if next-visit push else drop then
-        dup room>south c@ dup 0 <> if next-visit push else drop then
-        dup room>west  c@ dup 0 <> if next-visit push else drop then
+        \ add next rooms (only if not locked)
+        dup room>lock-north c@ 0 = if
+          dup room>north c@ ?dup 0 <> if next-visit push then
+        then
+        dup room>lock-east c@ 0 = if
+          dup room>east  c@ ?dup 0 <> if next-visit push then
+        then
+        dup room>lock-south c@ 0 = if
+          dup room>south c@ ?dup 0 <> if next-visit push then
+        then
+        dup room>lock-west c@ 0 = if
+          dup room>west  c@ ?dup 0 <> if next-visit push then
+        then
       then
       drop
     repeat
@@ -230,6 +237,11 @@ variable curr-depth
     over = if I swap drop leave then
   LOOP
   ix>room ;
+
+: erase-depths
+  #rooms 1+ 1 DO
+    0 I ix>room room>aux !
+  LOOP ;
 
 \ used for path finding
 variable roompath-length
@@ -280,42 +292,32 @@ create roompath #rooms cells allot
     = or
   loop nip ;
 
-variable leafrooms-length
-create leafrooms #rooms cells allot
+variable openrooms-length
+create openrooms #rooms cells allot
 
-: store-leaf-rooms
-  \ list rooms that are not part of the victory path
-  0 leafrooms-length !
-  leafrooms #rooms cells erase
+: store-open-rooms
+  \ list rooms that are reachable (depth <> 0)
+  0 openrooms-length !
+  openrooms #rooms cells erase
 
-  #rooms 1+ 2 do
-    I ix>room in-main-path? invert if
+  #rooms 1+ 1 do
+    I ix>room room>aux @ 0 <> if
       I ix>room
-      leafrooms leafrooms-length @ cells + !
-      1 leafrooms-length +!
+      openrooms openrooms-length @ cells + !
+      1 openrooms-length +!
     then
   loop ;
 
-: debug:show-leaf-rooms
-  leafrooms-length @ 0 do
-    leafrooms I cells + @ room>name 2@ type cr
+: debug:show-open-rooms
+  openrooms-length @ 0 do
+    openrooms I cells + @ room>name 2@ type cr
   loop ;
 
-: has-leaf-rooms?
-  leafrooms-length @ 0 <> ;
+: random-open-room
+  openrooms-length @ 1- random 1+ \ exclude start
+  cells openrooms + @ ;
 
-: random-leaf-room
-  leafrooms-length @ random
-  cells leafrooms + @ ;
-
-: random-room
-  has-leaf-rooms? if \ prefer leaf
-    random-leaf-room
-  else \ exclude start
-    #rooms 1- random 2 + ix>room
-  then ;
-
-: place-locks
+: place-lock
   \ get random room in path
   roompath-length @ 1- random 1+
   dup     cells roompath + @
@@ -325,9 +327,9 @@ create leafrooms #rooms cells allot
   room>lock-nesw \ lock-addr
   123 swap c! ;
 
-: place-items
+: place-item
   \ add item to random room
-   s" a rusty key" random-room room>item 2! ;
+   s" a rusty key" random-open-room room>item 2! ;
 
 : gen-maze
   \ clear the grid & room data
@@ -340,14 +342,16 @@ create leafrooms #rooms cells allot
   annotate-depths
 
   find-deepest-room
-    dup room>final 1 swap c! \ mark as finial
+    dup room>final 1 swap c! \ mark as final
     dup store-main-path
   drop
 
-  store-leaf-rooms
+  \ TODO: consider placing this always at the end?
+  place-lock
 
-  place-locks
-  place-items ;
+  \ find reachable rooms and place key
+  erase-depths annotate-depths store-open-rooms
+  place-item ;
 
 (
   Gameplay & Interacting with rooms

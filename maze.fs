@@ -31,30 +31,33 @@ RAM
 
 : ix>name
   case
-     1 of s" 1. South of House"     endof
-     2 of s" 2. Behind House"       endof
-     3 of s" 3. Kitchen"            endof
-     4 of s" 4. Living Room"        endof
-     5 of s" 5. Dark Cellar"        endof
-     6 of s" 6. Chasm Edge"         endof
-     7 of s" 7. Art Gallery"        endof
-     8 of s" 8. Attic"              endof
-     9 of s" 9. Small Room"         endof
-    10 of s" 10. Engravings Cave"   endof
+     1 of s" 1. Treasury"       endof
+     2 of s" 2. Icey Room"      endof
+     3 of s" 3. Library"        endof
+     4 of s" 4. Observatory"    endof
+     5 of s" 5. Cellar"         endof
+     6 of s" 6. Boiler Room"    endof
+     7 of s" 7. Dimly Lit Room" endof
+     8 of s" 8. Bat Cave"       endof
+     9 of s" 9. Art Gallery"    endof
+    10 of s" 10. Catacombs"     endof
   endcase ;
 
 : ix>desc
   case
-     1 of s" You are facing the south side of a white house. There is no door here, and all the windows are boarded."   endof
-     2 of s" You are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar."   endof
-     3 of s" You are in the kitchen of the white house. A table seems to have been used recently for the preparation of food." endof
-     4 of s" You are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the center of the room."  endof
-     5 of s" You are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable."  endof
-     6 of s" You are on the east edge of a chasm, the bottom of which cannot be seen. "   endof
-     7 of s" This is an art gallery. Most of the paintings have been stolen by vandals with exceptional taste. The vandals left through either the north or west exits." endof
-     8 of s" This is the attic. The only exit is a stairway leading down." endof
-     9 of s" This is a small room with passages to the east and south and a forbidding hole leading west."  endof
-    10 of s" You have entered a low cave with passages leading northwest and east. There are old engravings on the walls here."   endof
+     1 of s" You squint your eyes, as you get blinded by the sudden brightness of the golden walls around you, adorned by thousands of gemstones."   endof
+     2 of s" A shiver runs along your spine as the cold wind sweeps through the room covered in ice and snow. You nearly slip on the surface, but manage to regain your balance."   endof
+     3 of s" Piles of books after piles of books cover every last corner of the library. If only you had the time to sit in the armchair and dive into the adventures hidden between the dusty covers." endof
+     4 of s" The sun, the moon and every last planet of our solar system greet you, as the view to the observatory opens before your eyes. Even the ceiling sparkles with thousands of stars." endof
+     5 of s" The sound of bubbling reaches your ears and you see a cauldron in the middle of the room, surrounded by herbs and bones of creatures you've never seen before."  endof
+     6 of s" A loud roar and a puff stops you in your tracks. Is it a zombie? A demon? No, just the boiler room of the castle. Phew."   endof
+     7 of s" The room before you is dark as the night, the only light source in it a chandelier in which a single candle flickers faintly. Something about this feels sinister." endof
+     8 of s" Soft squeaks and the rustling of something leathery reaches your ears. Yet the room seems empty... Apart from the hundred bats sleeping right above your head, that is. Please be fruit bats, please be fruit bats..." endof
+     9 of s" A room full of life-sized portraits piques your curiosity. The detail in each painting is incredible and you feel tempted to reach forward to feel the dried paint beneath your fingers."  endof
+    10 of s" Something crunches beneath your feet and you stagger. The floor is uneven-the pile of bones covering every inch not offering a stable ground to walk on."   endof
+    \ 11 of s" Music dances across the room, its sweet melody reminding you of something that you can’t quite place your finger on." endof
+    \ 12 of s" Something colorful flutters past your eye and you follow the sight. A soft smile rises on your lips as you see the dozens of butteflies flying around the room, otherwise covered in flowers unlike any you have ever seen."  endof
+    \ 13 of s" The feeling of someone watching you sends goosebumps to run along your skin. It doesn’t take long for you to spot the pair of eyes: the doll in the middle of the room following each of your steps. No thank you!" endof
   endcase ;
 
 : rooms room% * ;
@@ -548,9 +551,10 @@ create inventory 20 chars allot
     page
     look-room
     current-room @ ix>room room>final c@ 0 <> if
-      cr cr cr
+      cr cr
       ."   Hooray, you win!"
       snd-hooray
+      exit \ back to menu
     then
     key key>action
   again ;

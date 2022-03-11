@@ -224,13 +224,13 @@ create roompath #rooms cells allot
     dup room>aux @
   then ;
 
-: store-main-path
-  \ find path from start to finish
-  0 roompath-length !
+\ find path from start to finish
+: store-main-path ( tgt-room -- )
   roompath #rooms cells erase
+  1 roompath-length !
+  dup roompath !
 
-   \ tgt-addr tgt-addr
-  dup room>aux @ \ room room depth
+  dup room>aux @ \ room depth
   begin
     over >r
 
@@ -270,9 +270,7 @@ create leafrooms #rooms cells allot
   leafrooms #rooms cells erase
 
   #rooms 1+ 2 do
-    dup I ix>room <> \ exclude finish
-    I ix>room in-main-path? invert
-    and if
+    I ix>room in-main-path? invert if
       I ix>room
       leafrooms leafrooms-length @ cells + !
       1 leafrooms-length +!
@@ -315,8 +313,9 @@ create leafrooms #rooms cells allot
   find-deepest-room
     dup room>final 1 swap c! \ mark as finial
     dup store-main-path
-    dup store-leaf-rooms
   drop
+
+  store-leaf-rooms
 
   place-items ;
 

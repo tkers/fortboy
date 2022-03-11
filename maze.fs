@@ -489,6 +489,25 @@ create inventory 20 chars allot
     s" You are not carrying any items right now." .alert
   then ;
 
+: use-item
+  inventory @ 0 <> if
+    current-room @ ix>room
+      dup room>lock-north 0 swap c!
+      dup room>lock-east  0 swap c!
+      dup room>lock-south 0 swap c!
+      dup room>lock-west  0 swap c!
+    drop
+
+    s" You use " pad place
+    inventory count pad append
+    bl pad cappend
+    s" to unlock all doors in this room." pad append
+
+    pad count .alert
+  else
+    s" You don't have any item you can use here." .alert
+  then ;
+
 : key>action
   case
     k-up     of 0 go-room endof
@@ -497,6 +516,7 @@ create inventory 20 chars allot
     k-left   of 3 go-room endof
     k-a      of take-item endof
     k-b      of drop-item endof
+    k-start  of  use-item endof
     k-select of  show-map endof
   endcase ;
 

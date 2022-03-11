@@ -457,6 +457,14 @@ create inventory 20 chars allot
     current-room ! page
   then ;
 
+: has-locks? ( room -- f )
+  false
+    over room>lock-north c@ 0 <> or
+    over room>lock-east c@ 0 <> or
+    over room>lock-south c@ 0 <> or
+    over room>lock-west c@ 0 <> or
+  nip ;
+
 : take-item ( -- )
   current-room @ ix>room room>item
   dup 2@ dup 0 <> if
@@ -490,23 +498,32 @@ create inventory 20 chars allot
   then ;
 
 : use-item
-  inventory @ 0 <> if
-    current-room @ ix>room
-      dup room>lock-north 0 swap c!
-      dup room>lock-east  0 swap c!
-      dup room>lock-south 0 swap c!
-      dup room>lock-west  0 swap c!
-    drop
+  inventory @ 0 = if
+    s" You don't have any item you can use here." .alert
+    exit
+  then
 
-    s" You use " pad place
+  current-room @ ix>room has-locks? invert if
+    s" There is nothing you can use " pad place
     inventory count pad append
     bl pad cappend
-    s" to unlock all doors in this room." pad append
+    s" on in this room." pad append
+    pad count .alert exit
+  then
 
-    pad count .alert
-  else
-    s" You don't have any item you can use here." .alert
-  then ;
+  current-room @ ix>room
+    dup room>lock-north 0 swap c!
+    dup room>lock-east  0 swap c!
+    dup room>lock-south 0 swap c!
+    dup room>lock-west  0 swap c!
+  drop
+
+  s" You use " pad place
+  inventory count pad append
+  bl pad cappend
+  s" to unlock all doors in this room." pad append
+
+  pad count .alert ;
 
 : key>action
   case

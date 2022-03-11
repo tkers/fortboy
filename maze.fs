@@ -136,11 +136,24 @@ CREATE grid #grid allot
   r> flip-nesw room>nesw c! ;
 
 
+\ used for floodfill
 #rooms STACK visit-stack-1
 #rooms STACK visit-stack-2
 value curr-visit
 value next-visit
 variable curr-depth
+
+\ used for path finding
+variable roompath-length
+create roompath #rooms cells allot
+
+: check-path-step ( room depth nesw-addr -- room' depth' )
+  c@ ?dup 0 <> if
+    ix>room
+    dup room>aux @
+    rot > if drop else nip then
+    dup room>aux @
+  then ;
 
 : gen-maze
   \ clear the grid & room data
@@ -213,7 +226,36 @@ variable curr-depth
     I ix>room room>aux @
     over = if I swap drop leave then
   LOOP
+  dup \ need index for path
   ix>room room>final 1 swap c!
+
+  \ find path from start to finish
+  0 roompath-length !
+  roompath #rooms cells erase
+
+  ( tgt-ix ) ix>room
+  dup room>aux @ \ room depth
+  begin
+    over >r
+
+    \ get next room
+    r@ room>north check-path-step
+    r@ room>east  check-path-step
+    r@ room>south check-path-step
+    r> room>west  check-path-step
+
+    over roompath roompath-length @ cells + !
+    1 roompath-length +!
+
+    over 1 ix>room =
+  until
+  -1 roompath-length +! \ remove starting room
+  drop drop
+
+  \ debug: show path start-exit
+  \ roompath-length @ 0 do
+  \   roompath I cells + @ room>name 2@ type cr
+  \ loop
 
   \ add item to random room (except the starting room)
   s" a rusty key"

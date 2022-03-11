@@ -12,6 +12,7 @@ variable initial-seed
 
 require ./wrap.fs
 require ./maze.fs
+require ./intro.fs
 
 : wait-for-key key drop ;
 
@@ -28,6 +29,7 @@ require ./maze.fs
 : main
   init
   gen-maze
+  .intro
   play-maze ;
 
 \ debugging stats

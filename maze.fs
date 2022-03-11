@@ -19,6 +19,10 @@ struct
   1 chars field room>east
   1 chars field room>south
   1 chars field room>west
+  1 chars field room>lock-north
+  1 chars field room>lock-east
+  1 chars field room>lock-south
+  1 chars field room>lock-west
   2 cells field room>item
   1 chars field room>final
   cell field room>aux
@@ -110,6 +114,21 @@ CREATE grid #grid allot
     3 of 1- endof
   endcase ;
 
+: coords>nesw ( coord1 coord2 -- dir )
+  case
+    over 0 nesw of 0 endof
+    over 1 nesw of 1 endof
+    over 2 nesw of 2 endof
+    over 3 nesw of 3 endof
+  endcase nip ;
+
+: room>lock-nesw ( room dir -- lock-addr )
+  case
+    0 of room>lock-north endof
+    1 of room>lock-east endof
+    2 of room>lock-south endof
+    3 of room>lock-west endof
+  endcase ;
 
 : flip-nesw
   case
@@ -317,6 +336,15 @@ create leafrooms #rooms cells allot
 
   store-leaf-rooms
 
+  \ get random room in path
+  roompath-length @ 1- random 1+
+  dup     cells roompath + @
+  swap 1- cells roompath + @ \ room room+1
+  over room>coord @
+  swap room>coord @ coords>nesw \ room dir
+  room>lock-nesw \ lock-addr
+  123 swap c! \ add the lock
+
   place-items ;
 
 (
@@ -375,6 +403,12 @@ create inventory 20 chars allot
   dup room>south c@ 0 <> if s"  South," pad append then
   dup room>west  c@ 0 <> if s"  West,"  pad append then
   [char] . pad count 1- + c! \ replace last space with dot
+
+  bl pad cappend
+  dup room>lock-north c@ 0 <> if s" The path to the North is blocked." pad append then
+  dup room>lock-east  c@ 0 <> if s" The path to the East is blocked."  pad append then
+  dup room>lock-south c@ 0 <> if s" The path to the South is blocked." pad append then
+  dup room>lock-west  c@ 0 <> if s" The path to the West is blocked."  pad append then
 
   pad count .wrapped
   drop ;

@@ -135,44 +135,8 @@ CREATE grid #grid allot
   ix>room \ ix1 a2
   r> flip-nesw room>nesw c! ;
 
-
-\ used for floodfill
-#rooms STACK visit-stack-1
-#rooms STACK visit-stack-2
-value curr-visit
-value next-visit
-variable curr-depth
-
-\ used for path finding
-variable roompath-length
-create roompath #rooms cells allot
-
-: in-path? ( x -- f )
-  false
-  #rooms 0 do
-    over
-    roompath I cells + @
-    = or
-  loop nip ;
-
-variable leafrooms-length
-create leafrooms #rooms cells allot
-
-: check-path-step ( room depth nesw-addr -- room' depth' )
-  c@ ?dup 0 <> if
-    ix>room
-    dup room>aux @
-    rot > if drop else nip then
-    dup room>aux @
-  then ;
-
-: gen-maze
-  \ clear the grid & room data
-  grid #grid erase
-  0 roomlist-length !
-  roomlist #rooms rooms erase
-
-  \ first room
+: shape-maze
+  \ add first room
   rand-grid
   dup occupy-grid
   push-room
@@ -191,9 +155,17 @@ create leafrooms #rooms cells allot
       drop drop drop
       0
     then
-  +loop
+  +loop ;
 
-  \ floodfill for depth calculation
+\ used for floodfill
+#rooms STACK visit-stack-1
+#rooms STACK visit-stack-2
+value curr-visit
+value next-visit
+variable curr-depth
+
+\ floodfill for depth calculation
+: annotate-depths
   visit-stack-1 clear
   visit-stack-2 clear
   visit-stack-1 to curr-visit
@@ -223,29 +195,42 @@ create leafrooms #rooms cells allot
     curr-visit
     next-visit to curr-visit
                to next-visit
-  curr-visit empty? until
+  curr-visit empty? until ;
 
-  \ get deepest level
+: max-room-depth ( -- u )
   0
   #rooms 1+ 2 DO
     I ix>room room>aux @ \ a b
     2dup < if nip else drop then
-  LOOP
+  LOOP ;
 
-  \ get deepest room and mark as final exit
-  #rooms 1+ 2 DO
+: find-deepest-room ( -- addr )
+  max-room-depth
+  #rooms 1+ 1 DO
     I ix>room room>aux @
     over = if I swap drop leave then
   LOOP
-  dup \ need index for path
-  ix>room room>final 1 swap c!
+  ix>room ;
 
+\ used for path finding
+variable roompath-length
+create roompath #rooms cells allot
+
+: check-path-step ( room depth nesw-addr -- room' depth' )
+  c@ ?dup 0 <> if
+    ix>room
+    dup room>aux @
+    rot > if drop else nip then
+    dup room>aux @
+  then ;
+
+: store-main-path
   \ find path from start to finish
   0 roompath-length !
   roompath #rooms cells erase
 
-  ( tgt-ix ) dup ix>room
-  dup room>aux @ \ room depth
+   \ tgt-addr tgt-addr
+  dup room>aux @ \ room room depth
   begin
     over >r
 
@@ -261,47 +246,83 @@ create leafrooms #rooms cells allot
     over 1 ix>room =
   until
   -1 roompath-length +! \ remove starting room
-  drop drop
+  drop drop ;
 
-  \ debug: show path start-exit
-  \ roompath-length @ 0 do
-  \   roompath I cells + @ room>name 2@ type cr
-  \ loop
+: debug:show-main-path
+  roompath-length @ 0 do
+    roompath I cells + @ room>name 2@ type cr
+  loop ;
 
-  ( ix-goal )
+: in-main-path? ( x -- f )
+  false
+  #rooms 0 do
+    over
+    roompath I cells + @
+    = or
+  loop nip ;
 
+variable leafrooms-length
+create leafrooms #rooms cells allot
+
+: store-leaf-rooms
   \ list rooms that are not part of the victory path
   0 leafrooms-length !
   leafrooms #rooms cells erase
 
   #rooms 1+ 2 do
-    dup I <> \ exclude finish
-    I ix>room in-path? invert
+    dup I ix>room <> \ exclude finish
+    I ix>room in-main-path? invert
     and if
       I ix>room
       leafrooms leafrooms-length @ cells + !
       1 leafrooms-length +!
     then
-  loop
+  loop ;
+
+: debug:show-leaf-rooms
+  leafrooms-length @ 0 do
+    leafrooms I cells + @ room>name 2@ type cr
+  loop ;
+
+: has-leaf-rooms?
+  leafrooms-length @ 0 <> ;
+
+: random-leaf-room
+  leafrooms-length @ random
+  cells leafrooms + @ ;
+
+: random-room
+  has-leaf-rooms? if \ prefer leaf
+    random-leaf-room
+  else \ exclude start
+    #rooms 1- random 2 + ix>room
+  then ;
+
+: place-items
+  \ add item to random room
+   s" a rusty key" random-room room>item 2! ;
+
+: gen-maze
+  \ clear the grid & room data
+  grid #grid erase
+  0 roomlist-length !
+  roomlist #rooms rooms erase
+
+  \ create rooms and add depth info
+  shape-maze
+  annotate-depths
+
+  find-deepest-room
+    dup room>final 1 swap c! \ mark as finial
+    dup store-main-path
+    dup store-leaf-rooms
   drop
 
-  \ debug: show leafs
-  \ leafrooms-length @ 0 do
-  \   leafrooms I cells + @ room>name 2@ type cr
-  \ loop
+  place-items ;
 
-  \ add item to random room
-  s" a rusty key"
-  leafrooms-length @ ?dup 0 <> if
-    \ prefer leaf rooms
-    random cells leafrooms + @
-  else
-    \ exclude starting room
-    #rooms 1- random 2 + ix>room
-  then
-  room>item 2!
-
-  ;
+(
+  Gameplay & Interacting with rooms
+)
 
 variable current-room
 create inventory 20 chars allot

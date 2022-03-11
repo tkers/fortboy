@@ -130,7 +130,7 @@ CREATE grid #grid allot
     3 of room>lock-west endof
   endcase ;
 
-: flip-nesw
+: flip-nesw ( u -- u )
   case
     0 of 2 endof
     1 of 3 endof
@@ -138,7 +138,7 @@ CREATE grid #grid allot
     3 of 1 endof
   endcase ;
 
-: room>nesw
+: room>nesw ( room dir -- nesw-addr )
   case
     0 of room>north endof
     1 of room>east endof
@@ -315,6 +315,16 @@ create leafrooms #rooms cells allot
     #rooms 1- random 2 + ix>room
   then ;
 
+: place-locks
+  \ get random room in path
+  roompath-length @ 1- random 1+
+  dup     cells roompath + @
+  swap 1- cells roompath + @ \ room room+1
+  over room>coord @
+  swap room>coord @ coords>nesw \ room dir
+  room>lock-nesw \ lock-addr
+  123 swap c! ;
+
 : place-items
   \ add item to random room
    s" a rusty key" random-room room>item 2! ;
@@ -336,15 +346,7 @@ create leafrooms #rooms cells allot
 
   store-leaf-rooms
 
-  \ get random room in path
-  roompath-length @ 1- random 1+
-  dup     cells roompath + @
-  swap 1- cells roompath + @ \ room room+1
-  over room>coord @
-  swap room>coord @ coords>nesw \ room dir
-  room>lock-nesw \ lock-addr
-  123 swap c! \ add the lock
-
+  place-locks
   place-items ;
 
 (

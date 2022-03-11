@@ -442,8 +442,17 @@ create inventory 20 chars allot
   drop ;
 
 : go-room ( dir -- )
-  current-room @ ix>room
-  swap room>nesw c@
+  current-room @ ix>room swap
+  2dup room>lock-nesw c@
+  ?dup 0 <> if
+    s" This path is blocked. You can use item #" pad place
+    pad #append
+    bl pad cappend
+    s" to unlock it." pad append
+    pad count .alert
+    2drop exit
+  then
+  room>nesw c@
   ?dup 0 <> if
     current-room ! page
   then ;

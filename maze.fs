@@ -147,6 +147,17 @@ variable curr-depth
 variable roompath-length
 create roompath #rooms cells allot
 
+: in-path? ( x -- f )
+  false
+  #rooms 0 do
+    over
+    roompath I cells + @
+    = or
+  loop nip ;
+
+variable leafrooms-length
+create leafrooms #rooms cells allot
+
 : check-path-step ( room depth nesw-addr -- room' depth' )
   c@ ?dup 0 <> if
     ix>room
@@ -233,7 +244,7 @@ create roompath #rooms cells allot
   0 roompath-length !
   roompath #rooms cells erase
 
-  ( tgt-ix ) ix>room
+  ( tgt-ix ) dup ix>room
   dup room>aux @ \ room depth
   begin
     over >r
@@ -257,10 +268,38 @@ create roompath #rooms cells allot
   \   roompath I cells + @ room>name 2@ type cr
   \ loop
 
-  \ add item to random room (except the starting room)
+  ( ix-goal )
+
+  \ list rooms that are not part of the victory path
+  0 leafrooms-length !
+  leafrooms #rooms cells erase
+
+  #rooms 1+ 2 do
+    dup I <> \ exclude finish
+    I ix>room in-path? invert
+    and if
+      I ix>room
+      leafrooms leafrooms-length @ cells + !
+      1 leafrooms-length +!
+    then
+  loop
+  drop
+
+  \ debug: show leafs
+  \ leafrooms-length @ 0 do
+  \   leafrooms I cells + @ room>name 2@ type cr
+  \ loop
+
+  \ add item to random room
   s" a rusty key"
-  #rooms 1- random 2 +
-  ix>room room>item 2!
+  leafrooms-length @ ?dup 0 <> if
+    \ prefer leaf rooms
+    random cells leafrooms + @
+  else
+    \ exclude starting room
+    #rooms 1- random 2 + ix>room
+  then
+  room>item 2!
 
   ;
 

@@ -342,12 +342,13 @@ create openrooms #rooms cells allot
   \ shuffle item order
   fill-item-bag
 
+  \ sprinkle some gold coins around
+  3 random 1+ place-gold
+  3 random 1+ place-gold
+  1 place-gold
+
   \ TODO: consider placing this always at the end?
   place-lock-and-item
-
-  \ sprinkle some gold coins around
-  2 random 1+ place-gold
-  2 random 1+ place-gold
 
   \ add another lock and item
   place-lock-and-item ;

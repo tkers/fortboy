@@ -422,14 +422,35 @@ create inventory 20 chars allot
   dup room>south c@ 0 <> if swap 1+ swap then
   dup room>west  c@ 0 <> if swap 1+ swap then
 
-  swap 1 = if s" a door " else s" doors " then pad append
-  s" leading to the" pad append
+  over 1 = if s" a door " else s" doors " then pad append
+  s" leading to the " pad append
 
-  dup room>north c@ 0 <> if s"  North," pad append then
-  dup room>east  c@ 0 <> if s"  East,"  pad append then
-  dup room>south c@ 0 <> if s"  South," pad append then
-  dup room>west  c@ 0 <> if s"  West,"  pad append then
-  [char] . pad count 1- + c! \ replace last space with dot
+  dup room>north c@ 0 <> if
+    s" North" pad append
+    swap 1- swap
+    over 1 = if s"  and " pad append then
+    over 1 > if s" , " pad append then
+  then
+  dup room>east  c@ 0 <> if
+    s" East"  pad append
+    swap 1- swap
+    over 1 = if s"  and " pad append then
+    over 1 > if s" , " pad append then
+  then
+  dup room>south c@ 0 <> if
+    s" South" pad append
+    swap 1- swap
+    over 1 = if s"  and " pad append then
+    over 1 > if s" , " pad append then
+  then
+  dup room>west  c@ 0 <> if
+    s" West"  pad append
+    swap 1- swap
+    over 1 = if s"  and " pad append then
+    over 1 > if s" , " pad append then
+  then
+  nip
+  [char] . pad cappend
 
   dup room>lock-north c@ 0 <> if
     bl pad cappend

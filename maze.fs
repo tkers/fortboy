@@ -501,7 +501,6 @@ create inventory 20 chars allot
     pad append
     bl pad cappend
     s" from the room." pad append
-    pad count .alert
 
     dup 2@ s" a gold coin" str= if
       1 gold-coins +!
@@ -510,6 +509,9 @@ create inventory 20 chars allot
     then
 
     0 0 rot 2! \ clear room item
+
+    snd-take
+    pad count .alert
   else
     2drop
     s" There is nothing you can take from this room." .alert
@@ -525,6 +527,7 @@ create inventory 20 chars allot
     current-room @ ix>room room>item 2!
     0 inventory !
 
+    snd-drop
     pad count .alert
   else
     s" You are not carrying any items right now." .alert
@@ -556,6 +559,7 @@ create inventory 20 chars allot
   bl pad cappend
   s" to unlock all doors in this room." pad append
 
+  snd-unlock
   pad count .alert ;
 
 : key>action

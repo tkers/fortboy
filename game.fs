@@ -32,6 +32,9 @@ require ./intro.fs
   .intro
   play-maze ;
 
+\ force emit all code to get correct ROM size
+' main drop
+
 \ debugging stats
 cr cr
 rom here          [host] ." ROM Used: " 5 .r space ." bytes"    [target]

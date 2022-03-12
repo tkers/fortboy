@@ -14,12 +14,12 @@ require time.fs
   E6  note ;
 
 : snd-take
-  E6 note 80 ms
-  A5 note ;
-
-: snd-drop
   A5 note 80 ms
   E6 note ;
+
+: snd-drop
+  E6 note 80 ms
+  A5 note ;
 
 : snd-unlock
   C4 note 60 ms

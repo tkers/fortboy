@@ -25,45 +25,14 @@ struct
   1 chars field room>lock-east
   1 chars field room>lock-south
   1 chars field room>lock-west
-  2 cells field room>item
+  1 chars field room>item
   1 chars field room>final
   cell field room>aux
 end-struct room%
 RAM
 
-\ bag to draw random ids from
-#rooms bag: room-bag
-
-: id>name
-  case
-     0 of s" Cellar"         endof
-     1 of s" Icey Room"      endof
-     2 of s" Library"        endof
-     3 of s" Observatory"    endof
-     4 of s" Treasury"       endof
-     5 of s" Dimly Lit Room" endof
-     6 of s" Bat Cave"       endof
-     7 of s" Boiler Room"    endof
-     8 of s" Art Gallery"    endof
-     9 of s" Catacombs"      endof
-  endcase ;
-
-: id>desc
-  case
-     0 of s" The sound of bubbling reaches your ears and you see a cauldron in the middle of the room, surrounded by herbs and bones of creatures you've never seen before."  endof
-     1 of s" A shiver runs along your spine as the cold wind sweeps through the room covered in ice and snow. You nearly slip on the surface, but manage to regain your balance."   endof
-     2 of s" Piles of books after piles of books cover every last corner of the library. If only you had the time to sit in the armchair and dive into the adventures hidden between the dusty covers." endof
-     3 of s" The sun, the moon and every last planet of our solar system greet you, as the view to the observatory opens before your eyes. Even the ceiling sparkles with thousands of stars." endof
-     4 of s" You squint your eyes, as you get blinded by the sudden brightness of the golden walls around you, adorned by thousands of gemstones."   endof
-     5 of s" The room before you is dark as the night, the only light source in it a chandelier in which a single candle flickers faintly. Something about this feels sinister." endof
-     6 of s" Soft squeaks and the rustling of something leathery reaches your ears. Yet the room seems empty... Apart from the hundred bats sleeping right above your head, that is. Please be fruit bats, please be fruit bats..." endof
-     7 of s" A loud roar and a puff stops you in your tracks. Is it a zombie? A demon? No, just the boiler room of the castle. Phew."   endof
-     8 of s" A room full of life-sized portraits piques your curiosity. The detail in each painting is incredible and you feel tempted to reach forward to feel the dried paint beneath your fingers."  endof
-     9 of s" Something crunches beneath your feet and you stagger. The floor is uneven-the pile of bones covering every inch not offering a stable ground to walk on."   endof
-    \ 10 of s" Music dances across the room, its sweet melody reminding you of something that you can’t quite place your finger on." endof
-    \ 11 of s" Something colorful flutters past your eye and you follow the sight. A soft smile rises on your lips as you see the dozens of butteflies flying around the room, otherwise covered in flowers unlike any you have ever seen."  endof
-    \ 12 of s" The feeling of someone watching you sends goosebumps to run along your skin. It doesn’t take long for you to spot the pair of eyes: the doll in the middle of the room following each of your steps. No thank you!" endof
-  endcase ;
+include rooms.fs
+include items.fs
 
 : rooms room% * ;
 :m rooms room% * ;
@@ -79,8 +48,8 @@ create roomlist #rooms rooms allot
   next-room-addr >r
        ( xy ) r@ room>coord !
   room-bag draw-bag
-  dup id>name r@ room>name 2!
-      id>desc r@ room>description 2!
+  dup roomid>name r@ room>name 2!
+      roomid>desc r@ room>description 2!
   rdrop
   1 roomlist-length +! ;
 
@@ -326,8 +295,8 @@ create openrooms #rooms cells allot
   openrooms-length @ 1- random 1+ \ exclude start
   cells openrooms + @ ;
 
-: random-room
-  #rooms random ix>room ;
+\ : random-room
+\   #rooms random ix>room ;
 
 : place-lock
   \ get random room in path
@@ -340,11 +309,11 @@ create openrooms #rooms cells allot
 
 : place-key-item
   \ add item to any reachable room
-  random-open-room room>item 2! ;
+  random-open-room room>item c! ;
 
-: place-ext-item
-  \ add item to any room
-  random-room room>item 2! ;
+\ : place-ext-item
+\   \ add item to any room
+\   random-room room>item c! ;
 
 : gen-maze
   \ clear the grid & room data
@@ -363,12 +332,12 @@ create openrooms #rooms cells allot
   drop
 
   \ TODO: consider placing this always at the end?
-  123 place-lock
+  1 place-lock
 
   \ find reachable rooms and place key
   erase-depths annotate-depths store-open-rooms
-  s" a rusty key" place-key-item
-  s" a gold coin" place-ext-item ;
+  1 place-key-item
+  ( s" a gold coin" place-ext-item ) ;
 
 (
   Gameplay & Interacting with rooms
@@ -376,7 +345,7 @@ create openrooms #rooms cells allot
 
 variable current-room
 variable gold-coins
-create inventory 20 chars allot
+variable inventory
 
 : show-map
   page
@@ -405,14 +374,11 @@ create inventory 20 chars allot
   dup room>name        2@ center type cr cr
   dup room>description 2@ pad place
 
-  dup room>item 2@
-  dup 0 <> if
+  dup room>item c@
+  ?dup 0 <> if
     bl pad cappend
-    s" You spot " pad append
-    ( item-addr item-u ) pad append
-    bl pad cappend
-    s" laying on the floor." pad append
-  else 2drop then
+    itemid>look pad append
+  then
 
   bl pad cappend
   s" You can see " pad append
@@ -453,41 +419,25 @@ create inventory 20 chars allot
   nip
   [char] . pad cappend
 
-  dup room>lock-north c@ 0 <> if
-    bl pad cappend
-    s" The path to the North is blocked." pad append
-    \ s" You need item #" pad append
-    \ dup room>lock-north c@ pad #append
-    \ bl pad cappend
-    \ s" to continue." pad append
-  then
+  \ dup room>lock-north c@ 0 <> if
+  \   bl pad cappend
+  \   s" The path to the North is blocked." pad append
+  \ then
 
-  dup room>lock-east c@ 0 <> if
-    bl pad cappend
-    s" The path to the East is blocked." pad append
-    \ s" You need item #" pad append
-    \ dup room>lock-east c@ pad #append
-    \ bl pad cappend
-    \ s" to continue." pad append
-  then
+  \ dup room>lock-east c@ 0 <> if
+  \   bl pad cappend
+  \   s" The path to the East is blocked." pad append
+  \ then
 
-  dup room>lock-south c@ 0 <> if
-    bl pad cappend
-    s" The path to the South is blocked." pad append
-    \ s" You need item #" pad append
-    \ dup room>lock-south c@ pad #append
-    \ bl pad cappend
-    \ s" to continue." pad append
-  then
+  \ dup room>lock-south c@ 0 <> if
+  \   bl pad cappend
+  \   s" The path to the South is blocked." pad append
+  \ then
 
-  dup room>lock-west c@ 0 <> if
-    bl pad cappend
-    s" The path to the West is blocked." pad append
-    \ s" You need item #" pad append
-    \ dup room>lock-west c@ pad #append
-    \ bl pad cappend
-    \ s" to continue." pad append
-  then
+  \ dup room>lock-west c@ 0 <> if
+  \   bl pad cappend
+  \   s" The path to the West is blocked." pad append
+  \ then
 
   pad count .wrapped
   drop ;
@@ -496,11 +446,7 @@ create inventory 20 chars allot
   current-room @ ix>room swap
   2dup room>lock-nesw c@
   ?dup 0 <> if
-    s" This path is blocked. You can use item #" pad place
-    pad #append
-    bl pad cappend
-    s" to unlock it." pad append
-    pad count .alert
+    itemid>need .alert
     2drop exit
   then
   room>nesw c@
@@ -518,55 +464,39 @@ create inventory 20 chars allot
 
 : take-item ( -- )
   current-room @ ix>room room>item
-  dup 2@ ?dup 0 <> if
-    s" You take " pad place
-    pad append
-    bl pad cappend
-    s" from the room." pad append
-
-    dup 2@ s" a gold coin" str= if
-      1 gold-coins +!
-    else
-      dup 2@ inventory place \ add to inventory
-    then
-
-    0 0 rot 2! \ clear room item
-
+  dup c@ ?dup 0 <> if
     snd-take
-    pad count .alert
+    dup itemid>take .alert
+    inventory c!
+    0 swap c!
+
+    \ dup 2@ s" a gold coin" str= if
+    \   1 gold-coins +!
+    \ then
   else
-    2drop
+    drop
     s" There is nothing you can take from this room." .alert
   then ;
 
 : drop-item
-  inventory @ 0 <> if
-    s" You drop " pad place
-    inventory count 2dup pad append
-    bl pad cappend
-    s" on the floor." pad append
-
-    current-room @ ix>room room>item 2!
-    0 inventory !
-
+  inventory c@ ?dup 0 <> if
     snd-drop
-    pad count .alert
+    dup itemid>drop .alert
+    current-room @ ix>room room>item c!
+    0 inventory c!
   else
     s" You are not carrying any items right now." .alert
   then ;
 
 : use-item
-  inventory @ 0 = if
-    s" You don't have any item you can use here." .alert
+  inventory c@ ?dup 0 = if
+    s" You don't have any items in your inventory." .alert
     exit
   then
 
   current-room @ ix>room has-locks? invert if
-    s" There is nothing you can use " pad place
-    inventory count pad append
-    bl pad cappend
-    s" on in this room." pad append
-    pad count .alert exit
+    drop \ todo use item name somehow?
+    s" You can't use your item here" .alert exit
   then
 
   current-room @ ix>room
@@ -576,13 +506,10 @@ create inventory 20 chars allot
     dup room>lock-west  0 swap c!
   drop
 
-  s" You use " pad place
-  inventory count pad append
-  bl pad cappend
-  s" to unlock all doors in this room." pad append
+  0 inventory c!
 
   snd-unlock
-  pad count .alert ;
+  itemid>use .alert ;
 
 : key>action
   case
@@ -599,7 +526,7 @@ create inventory 20 chars allot
 : play-maze
   1 current-room !
   0 gold-coins !
-  inventory 20 chars erase
+  0 inventory c!
   begin
     page
     look-room

@@ -3,6 +3,7 @@ require stack.fs
 require ./strings.fs
 require ./bag.fs
 require ./tunes.fs
+require ./popup.fs
 
 \ utils
 :m square dup * ;
@@ -393,7 +394,7 @@ create inventory 20 chars allot
   key drop ;
 
 : .alert ( c-addr u -- )
-  page .wrapped key drop ;
+  page popup key drop ;
 
 : center ( c-addr u -- c-addr u )
   SCRN_X_B over - 2/ spaces ;

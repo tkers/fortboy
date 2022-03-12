@@ -472,12 +472,12 @@ variable inventory
     current-room ! page
   then ;
 
-: has-locks? ( room -- f )
-  false
-    over room>lock-north c@ 0 <> or
-    over room>lock-east c@ 0 <> or
-    over room>lock-south c@ 0 <> or
-    over room>lock-west c@ 0 <> or
+: room>any-lock@ ( room -- u )
+  0
+  over room>lock-north c@ or
+  over room>lock-east  c@ or
+  over room>lock-south c@ or
+  over room>lock-west  c@ or
   nip ;
 
 : take-item ( -- )
@@ -518,9 +518,14 @@ variable inventory
     exit
   then
 
-  current-room @ ix>room has-locks? invert if
+  current-room @ ix>room room>any-lock@ ?dup 0= if
     drop \ todo use item name somehow?
-    s" You can't use your item here" .alert exit
+    s" You can't use your item anywhere." .alert exit
+  then
+
+  over <> if
+    drop \ todo use item name somehow?
+    s" That item doesn't help you here." .alert exit
   then
 
   current-room @ ix>room

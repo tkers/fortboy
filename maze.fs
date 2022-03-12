@@ -339,7 +339,9 @@ create openrooms #rooms cells allot
   erase-depths annotate-depths store-open-rooms
   1 place-item
 
-  1 place-gold ;
+  \ sprinkle some gold coins around
+  2 random 1+ place-gold
+  2 random 1+ place-gold ;
 
 (
   Gameplay & Interacting with rooms
@@ -384,9 +386,16 @@ variable inventory
 
   dup room>gold c@
   ?dup 0 <> if
-    drop \ todo allow multiple coins?
     bl pad cappend
-    s" A gold coin is laying on the floor." pad append
+    dup 1 = if
+      drop
+      s" A gold coin is laying on the floor." pad append
+    else
+      s" You see " pad append
+      pad #append
+      bl pad cappend
+      s" gold coins on the floor." pad append
+    then
   then
 
   bl pad cappend
@@ -481,8 +490,10 @@ variable inventory
   else
     drop current-room @ ix>room room>gold
     dup c@ ?dup 0 <> if
+      s" You take the gold coin" pad place
+      dup 1 > if [char] s pad cappend then [char] . pad cappend
       snd-take
-      s" You take the gold coin." .alert
+      pad count .alert
       ( n ) gold-coins +!
       0 swap c!
     else

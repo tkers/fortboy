@@ -387,10 +387,13 @@ create inventory 20 chars allot
 : .alert ( c-addr u -- )
   page .wrapped key drop ;
 
+: center ( c-addr u -- c-addr u )
+  SCRN_X_B over - 2/ spaces ;
+
 : look-room ( -- )
   current-room @ ix>room
 
-  dup room>name        2@ type cr cr
+  dup room>name        2@ center type cr cr
   dup room>description 2@ pad place
 
   dup room>item 2@

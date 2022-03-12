@@ -312,6 +312,12 @@ create openrooms #rooms cells allot
   \ add item to any reachable room
   random-open-room room>item c! ;
 
+: place-lock-and-item
+  item-bag draw-bag 1+ dup
+  place-lock
+  erase-depths annotate-depths store-open-rooms
+  ( n ) place-item ;
+
 : place-gold
   \ add gold to any room
   random-room room>gold c! ;
@@ -321,7 +327,7 @@ create openrooms #rooms cells allot
   grid #grid erase
   0 roomlist-length !
   roomlist #rooms rooms erase
-  #rooms room-bag fill-bag
+  fill-room-bag
 
   \ create rooms and add depth info
   shape-maze
@@ -332,22 +338,18 @@ create openrooms #rooms cells allot
     dup store-main-path
   drop
 
-  \ TODO: consider placing this always at the end?
-  1 place-lock
+  \ shuffle item order
+  fill-item-bag
 
-  \ find reachable rooms and place key
-  erase-depths annotate-depths store-open-rooms
-  1 place-item
+  \ TODO: consider placing this always at the end?
+  place-lock-and-item
 
   \ sprinkle some gold coins around
   2 random 1+ place-gold
   2 random 1+ place-gold
 
-  \ add another lock and key
-  \ TODO: block the path to the first key
-  2 place-lock
-  erase-depths annotate-depths store-open-rooms
-  2 place-item ;
+  \ add another lock and item
+  place-lock-and-item ;
 
 (
   Gameplay & Interacting with rooms

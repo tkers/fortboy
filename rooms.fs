@@ -1,5 +1,6 @@
 \ bag to draw random room ids from
 10 bag: room-bag
+: fill-room-bag 10 room-bag fill-bag ;
 
 : roomid>name
   case

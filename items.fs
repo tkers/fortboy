@@ -1,5 +1,6 @@
 \ bag to draw random item ids from
-\ 1 bag: room-bag
+2 bag: item-bag
+: fill-item-bag 2 item-bag fill-bag ;
 
 : itemid>look
   1- case

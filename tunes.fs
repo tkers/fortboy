@@ -1,7 +1,7 @@
 require music.fs
 require time.fs
 
-: snd-sad
+: snd-block
   B4 note 180 ms
   A4 note 180 ms
   C4 note ;

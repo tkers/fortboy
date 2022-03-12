@@ -474,6 +474,7 @@ variable inventory
   current-room @ ix>room swap
   2dup room>lock-nesw c@
   ?dup 0 <> if
+    snd-block
     itemid>need .alert
     2drop exit
   then

@@ -1,21 +1,28 @@
 body {
   text-align: center;
-  color: #88c070;
+  color: #b6d69b;
+  font-family: monospace;
   padding-top: 16px;
 }
 
 canvas {
-  margin-top: 8px;
   height: 324px;
-  border: 1px solid #081820;
+  background-color: #f3fee1;
+  border: 1px solid #b6d69b;
+  padding: 8px;
+  margin: 8px;
+  border-radius: 8px;
   image-rendering: pixelated;
 }
 
 a {
-  font-family: monospace;
-  color: #306850;
+  color: #619075;
 }
 
 a:hover {
   text-decoration: none;
+}
+
+strong {
+  color: #203341;
 }

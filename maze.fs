@@ -275,12 +275,13 @@ variable openrooms-length
 create openrooms #rooms cells allot
 
 : store-open-rooms
-  \ list rooms that are reachable (depth <> 0)
   0 openrooms-length !
   openrooms #rooms cells erase
 
   #rooms 1+ 1 do
-    I ix>room room>aux @ 0 <> if
+    I ix>room room>aux @ 0 <> \ reachable (depth <>0 )
+    I ix>room room>item c@ 0= \ empty ( item 0= )
+    and if
       I ix>room
       openrooms openrooms-length @ cells + !
       1 openrooms-length +!

@@ -341,7 +341,13 @@ create openrooms #rooms cells allot
 
   \ sprinkle some gold coins around
   2 random 1+ place-gold
-  2 random 1+ place-gold ;
+  2 random 1+ place-gold
+
+  \ add another lock and key
+  \ TODO: block the path to the first key
+  2 place-lock
+  erase-depths annotate-depths store-open-rooms
+  2 place-item ;
 
 (
   Gameplay & Interacting with rooms

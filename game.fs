@@ -13,6 +13,7 @@ variable initial-seed
 require ./wrap.fs
 require ./maze.fs
 require ./intro.fs
+require ./outro.fs
 
 : wait-for-key key drop ;
 
@@ -29,8 +30,9 @@ require ./intro.fs
 : main
   init
   gen-maze
-  .intro
-  play-maze ;
+  intro
+  run-maze
+  outro ;
 
 \ force emit all code to get correct ROM size
 ' main drop

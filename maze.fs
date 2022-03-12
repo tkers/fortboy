@@ -568,19 +568,16 @@ variable inventory
     k-select of  show-map endof
   endcase ;
 
-: play-maze
+: win?
+  current-room @ ix>room room>final c@ 0<> ;
+
+: run-maze
   1 current-room !
   0 gold-coins !
   0 inventory c!
   begin
     page
+    win? if exit then
     look-room
-    current-room @ ix>room room>final c@ 0 <> if
-      cr cr
-      ."   Hooray, you win!" cr
-      ."    Gold found: " gold-coins ?
-      snd-hooray
-      exit \ back to menu
-    then
     key key>action
   again ;

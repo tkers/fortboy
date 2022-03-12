@@ -67,7 +67,7 @@ endcase ;
     13 of s" gold searcher" endof
    endcase ;
 
-: .intro
+: intro
   s" You wake up with a " pad place
   state-of-being pad append
   s"  from a " pad append

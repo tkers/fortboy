@@ -35,16 +35,16 @@ RAM
 
 : id>name
   case
-     0 of s" 1. Treasury"       endof
-     1 of s" 2. Icey Room"      endof
-     2 of s" 3. Library"        endof
-     3 of s" 4. Observatory"    endof
-     4 of s" 5. Cellar"         endof
-     5 of s" 6. Boiler Room"    endof
-     6 of s" 7. Dimly Lit Room" endof
-     7 of s" 8. Bat Cave"       endof
-     8 of s" 9. Art Gallery"    endof
-     9 of s" 10. Catacombs"     endof
+     0 of s" Treasury"       endof
+     1 of s" Icey Room"      endof
+     2 of s" Library"        endof
+     3 of s" Observatory"    endof
+     4 of s" Cellar"         endof
+     5 of s" Boiler Room"    endof
+     6 of s" Dimly Lit Room" endof
+     7 of s" Bat Cave"       endof
+     8 of s" Art Gallery"    endof
+     9 of s" Catacombs"      endof
   endcase ;
 
 : id>desc
@@ -422,34 +422,38 @@ create inventory 20 chars allot
 
   dup room>lock-north c@ 0 <> if
     bl pad cappend
-    s" The path to the North is blocked. You need item #" pad append
-    dup room>lock-north c@ pad #append
-    bl pad cappend
-    s" to continue." pad append
+    s" The path to the North is blocked." pad append
+    \ s" You need item #" pad append
+    \ dup room>lock-north c@ pad #append
+    \ bl pad cappend
+    \ s" to continue." pad append
   then
 
   dup room>lock-east c@ 0 <> if
     bl pad cappend
-    s" The path to the East is blocked. You need item #" pad append
-    dup room>lock-east c@ pad #append
-    bl pad cappend
-    s" to continue." pad append
+    s" The path to the East is blocked." pad append
+    \ s" You need item #" pad append
+    \ dup room>lock-east c@ pad #append
+    \ bl pad cappend
+    \ s" to continue." pad append
   then
 
   dup room>lock-south c@ 0 <> if
     bl pad cappend
-    s" The path to the South is blocked. You need item #" pad append
-    dup room>lock-south c@ pad #append
-    bl pad cappend
-    s" to continue." pad append
+    s" The path to the South is blocked." pad append
+    \ s" You need item #" pad append
+    \ dup room>lock-south c@ pad #append
+    \ bl pad cappend
+    \ s" to continue." pad append
   then
 
   dup room>lock-west c@ 0 <> if
     bl pad cappend
-    s" The path to the West is blocked. You need item #" pad append
-    dup room>lock-west c@ pad #append
-    bl pad cappend
-    s" to continue." pad append
+    s" The path to the West is blocked." pad append
+    \ s" You need item #" pad append
+    \ dup room>lock-west c@ pad #append
+    \ bl pad cappend
+    \ s" to continue." pad append
   then
 
   pad count .wrapped

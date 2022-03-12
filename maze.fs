@@ -374,6 +374,7 @@ create openrooms #rooms cells allot
 )
 
 variable current-room
+variable gold-coins
 create inventory 20 chars allot
 
 : show-map
@@ -500,11 +501,15 @@ create inventory 20 chars allot
     pad append
     bl pad cappend
     s" from the room." pad append
-
-    dup 2@ inventory place
-    0 0 rot 2! \ clear room item
-
     pad count .alert
+
+    dup 2@ s" a gold coin" str= if
+      1 gold-coins +!
+    else
+      dup 2@ inventory place \ add to inventory
+    then
+
+    0 0 rot 2! \ clear room item
   else
     2drop
     s" There is nothing you can take from this room." .alert
@@ -567,13 +572,15 @@ create inventory 20 chars allot
 
 : play-maze
   1 current-room !
+  0 gold-coins !
   inventory 20 chars erase
   begin
     page
     look-room
     current-room @ ix>room room>final c@ 0 <> if
       cr cr
-      ."   Hooray, you win!"
+      ."   Hooray, you win!" cr
+      ."    Gold found: " gold-coins ?
       snd-hooray
       exit \ back to menu
     then

@@ -491,11 +491,15 @@ variable inventory
 : take-item ( -- )
   current-room @ ix>room room>item
   dup c@ ?dup 0 <> if
+    inventory c@ tuck
+    ?dup 0 <> if
+      snd-drop
+      itemid>drop .alert
+    then
     snd-take
     dup itemid>take .alert
-    inventory c@ swap \ switch inventory<>room
     inventory c!
-    swap c!
+    swap c! \ switch inventory<>room
   else
     drop current-room @ ix>room room>gold
     dup c@ ?dup 0 <> if

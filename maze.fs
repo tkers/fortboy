@@ -493,8 +493,9 @@ variable inventory
   dup c@ ?dup 0 <> if
     snd-take
     dup itemid>take .alert
+    inventory c@ swap \ switch inventory<>room
     inventory c!
-    0 swap c!
+    swap c!
   else
     drop current-room @ ix>room room>gold
     dup c@ ?dup 0 <> if

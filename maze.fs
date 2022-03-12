@@ -325,6 +325,9 @@ create openrooms #rooms cells allot
   openrooms-length @ 1- random 1+ \ exclude start
   cells openrooms + @ ;
 
+: random-room
+  #rooms random ix>room ;
+
 : place-lock
   \ get random room in path
   roompath-length @ 1- random 1+
@@ -334,9 +337,13 @@ create openrooms #rooms cells allot
   swap room>coord @ coords>nesw \ room dir
   room>lock-nesw c! ;
 
-: place-item
+: place-key-item
   \ add item to any reachable room
   random-open-room room>item 2! ;
+
+: place-ext-item
+  \ add item to any room
+  random-room room>item 2! ;
 
 : gen-maze
   \ clear the grid & room data
@@ -359,7 +366,8 @@ create openrooms #rooms cells allot
 
   \ find reachable rooms and place key
   erase-depths annotate-depths store-open-rooms
-  s" a rusty key" place-item ;
+  s" a rusty key" place-key-item
+  s" a gold coin" place-ext-item ;
 
 (
   Gameplay & Interacting with rooms

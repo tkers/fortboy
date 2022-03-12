@@ -26,6 +26,7 @@ struct
   1 chars field room>lock-south
   1 chars field room>lock-west
   1 chars field room>item
+  1 chars field room>gold
   1 chars field room>final
   cell field room>aux
 end-struct room%
@@ -295,8 +296,8 @@ create openrooms #rooms cells allot
   openrooms-length @ 1- random 1+ \ exclude start
   cells openrooms + @ ;
 
-\ : random-room
-\   #rooms random ix>room ;
+: random-room
+  #rooms random ix>room ;
 
 : place-lock
   \ get random room in path
@@ -307,13 +308,13 @@ create openrooms #rooms cells allot
   swap room>coord @ coords>nesw \ room dir
   room>lock-nesw c! ;
 
-: place-key-item
+: place-item
   \ add item to any reachable room
   random-open-room room>item c! ;
 
-\ : place-ext-item
-\   \ add item to any room
-\   random-room room>item c! ;
+: place-gold
+  \ add gold to any room
+  random-room room>gold c! ;
 
 : gen-maze
   \ clear the grid & room data
@@ -336,8 +337,9 @@ create openrooms #rooms cells allot
 
   \ find reachable rooms and place key
   erase-depths annotate-depths store-open-rooms
-  1 place-key-item
-  ( s" a gold coin" place-ext-item ) ;
+  1 place-item
+
+  1 place-gold ;
 
 (
   Gameplay & Interacting with rooms
@@ -378,6 +380,13 @@ variable inventory
   ?dup 0 <> if
     bl pad cappend
     itemid>look pad append
+  then
+
+  dup room>gold c@
+  ?dup 0 <> if
+    drop \ todo allow multiple coins?
+    bl pad cappend
+    s" A gold coin is laying on the floor." pad append
   then
 
   bl pad cappend
@@ -469,13 +478,17 @@ variable inventory
     dup itemid>take .alert
     inventory c!
     0 swap c!
-
-    \ dup 2@ s" a gold coin" str= if
-    \   1 gold-coins +!
-    \ then
   else
-    drop
-    s" There is nothing you can take from this room." .alert
+    drop current-room @ ix>room room>gold
+    dup c@ ?dup 0 <> if
+      snd-take
+      s" You take the gold coin." .alert
+      ( n ) gold-coins +!
+      0 swap c!
+    else
+      drop
+      s" There is nothing you can take from this room." .alert
+    then
   then ;
 
 : drop-item

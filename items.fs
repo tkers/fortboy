@@ -23,7 +23,7 @@
 : itemid>use
   1- case
     0 of s" You use the key to unlock the heavy door." endof
-    1 of s" With a swift strike of your sword, you kill the rock troll." endof
+    1 of s" With a swift strike of your sword, you defeat the rock troll." endof
   endcase ;
 
 : itemid>need

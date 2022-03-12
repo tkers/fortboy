@@ -332,12 +332,11 @@ create openrooms #rooms cells allot
   swap 1- cells roompath + @ \ room room+1
   over room>coord @
   swap room>coord @ coords>nesw \ room dir
-  room>lock-nesw \ lock-addr
-  123 swap c! ;
+  room>lock-nesw c! ;
 
 : place-item
-  \ add item to random room
-   s" a rusty key" random-open-room room>item 2! ;
+  \ add item to any reachable room
+  random-open-room room>item 2! ;
 
 : gen-maze
   \ clear the grid & room data
@@ -356,11 +355,11 @@ create openrooms #rooms cells allot
   drop
 
   \ TODO: consider placing this always at the end?
-  place-lock
+  123 place-lock
 
   \ find reachable rooms and place key
   erase-depths annotate-depths store-open-rooms
-  place-item ;
+  s" a rusty key" place-item ;
 
 (
   Gameplay & Interacting with rooms
@@ -488,7 +487,7 @@ create inventory 20 chars allot
 
 : take-item ( -- )
   current-room @ ix>room room>item
-  dup 2@ dup 0 <> if
+  dup 2@ ?dup 0 <> if
     s" You take " pad place
     pad append
     bl pad cappend
@@ -499,7 +498,7 @@ create inventory 20 chars allot
 
     pad count .alert
   else
-    2drop drop
+    2drop
     s" There is nothing you can take from this room." .alert
   then ;
 

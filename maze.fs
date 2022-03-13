@@ -413,12 +413,11 @@ require ./hex.fs
     bl pad cappend
     dup 1 = if
       drop
-      s" A gold coin is laying on the floor." pad append
+      s" A gold coin lays on the floor." pad append
     else
-      s" You see " pad append
       pad #append
       bl pad cappend
-      s" gold coins on the floor." pad append
+      s" gold coins lay on the floor." pad append
     then
   then
 
@@ -528,7 +527,7 @@ require ./hex.fs
       0 swap c!
     else
       drop
-      s" There is nothing you can take from this room." .alert
+      s" There is nothing worth taking in this room." .alert
     then
   then ;
 
@@ -539,23 +538,23 @@ require ./hex.fs
     current-room @ ix>room room>item c!
     0 inventory c!
   else
-    s" You are not carrying any items right now." .alert
+    s" You do not have any items right now." .alert
   then ;
 
 : use-item
   inventory c@ ?dup 0 = if
-    s" You don't have any items in your inventory." .alert
+    s" You do not have any items right now." .alert
     exit
   then
 
   current-room @ ix>room room>any-lock@ ?dup 0= if
     drop \ todo use item name somehow?
-    s" You can't use your item anywhere." .alert exit
+    s" You scratch your head. Your item is of no use here." .alert exit
   then
 
   over <> if
     drop \ todo use item name somehow?
-    s" That item doesn't help you here." .alert exit
+    s" Your item does not help you here. Let's keep looking!" .alert exit
   then
 
   current-room @ ix>room

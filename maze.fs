@@ -562,9 +562,9 @@ require ./hex.fs
     k-down   of 2 go-room endof
     k-left   of 3 go-room endof
     k-a      of take-item endof
-    k-b      of drop-item endof
-    k-start  of  use-item endof
-    k-select of debug:show-map endof
+    k-b      of  use-item endof
+    k-select of drop-item endof
+    k-start  of debug:show-map endof
   endcase ;
 
 : win?

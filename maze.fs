@@ -297,8 +297,8 @@ create openrooms #rooms cells allot
   openrooms-length @ 1- random 1+ \ exclude start
   cells openrooms + @ ;
 
-: random-room
-  #rooms random ix>room ;
+: random-room \ ix starts at 1
+  #rooms random 1+ ix>room ;
 
 : place-lock
   \ get random room in path

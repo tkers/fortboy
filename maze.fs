@@ -431,12 +431,12 @@ require ./hex.fs
   bl pad cappend
   over 1 = if
     rot dup 1 = if
-      s" A door is leading to the " pad append
+      s" A path is leading to the " pad append
     else
       s" You can only go back " pad append
     then -rot
   else
-    s" Doors lead to the " pad append
+    s" Paths lead to the " pad append
   then
 
   dup room>north c@ 0 <> if

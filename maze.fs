@@ -9,7 +9,7 @@ require ./popup.fs
 :m square dup * ;
 
 \ number of rooms to create
-10 constant #rooms
+14 constant #rooms
 #rooms square constant #grid
 
 ROM
@@ -352,18 +352,19 @@ create openrooms #rooms cells allot
   fill-item-bag
 
   \ sprinkle some gold coins around
-  \ 10 total, spread over 1-6 rooms
+  \ 10 total, spread over 1-7 rooms
   1 place-gold
   1 place-gold
   1 place-gold
   1 place-gold
-  3 place-gold
+  1 place-gold
+  2 place-gold
   3 place-gold
 
   \ TODO: consider placing this always at the end?
   place-lock-and-item
-
-  \ add another lock and item
+  place-lock-and-item
+  place-lock-and-item
   place-lock-and-item ;
 
 (

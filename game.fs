@@ -16,19 +16,22 @@ require ./intro.fs
 require ./outro.fs
 
 : wait-for-key key drop ;
+: reseed
+  utime 1 max
+  dup seed !
+  initial-seed ! ;
 
 : init
   install-font
   init-term
   init-input
-  \ w" Press any key to start!"
-  \ wait-for-key page
-  \ utime seed ! ;
-  1234 seed !
-  seed @ initial-seed ! ;
+  1234 dup seed ! initial-seed ! ;
 
 : main
   init
+  4 14 at-xy ." Press Start"
+  wait-for-key reseed
+  2 14 at-xy ." Building Castle"
   gen-maze
   intro
   run-maze

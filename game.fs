@@ -28,18 +28,24 @@ require ./outro.fs
   init-input
   1234 dup seed ! initial-seed ! ;
 
-: main
-  init
+: title-screen
   stars stars-len type
   7 13 at-xy ." Press"
   6 14 at-xy ." any key"
   key reseed
   5 13 at-xy ." Assembling"
-  6 14 at-xy ." Fortress"
-  gen-maze
-  intro
-  run-maze
-  outro ;
+  6 14 at-xy ." Fortress" ;
+
+: main
+  init
+  begin
+    page
+    title-screen
+    gen-maze
+    show-intro
+    run-maze
+    show-outro
+  again ;
 
 \ force emit all code to get correct ROM size
 ' main drop

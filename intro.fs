@@ -31,7 +31,7 @@ endcase ;
     5 of s" head is spinning" endof
   endcase ;
 
-: intro
+: show-intro
   s" You wake up with a " pad place
   state-of-being pad append
   s"  from a " pad append

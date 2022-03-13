@@ -320,9 +320,12 @@ create openrooms #rooms cells allot
   ( n ) place-item ;
 
 : place-gold
-  \ add gold to any room
-  random-room room>gold
-  dup c@ rot +
+  \ add gold to any non-final room
+  0 begin
+    drop random-room
+    dup room>final c@ 0=
+  until
+  room>gold dup c@ rot +
   swap c! ;
 
 : gen-maze

@@ -230,8 +230,10 @@ create roompath #rooms cells allot
   c@ ?dup 0 <> if
     ix>room
     dup room>aux @
-    rot > if drop else nip then
-    dup room>aux @
+    ?dup 0= if drop else
+      rot > if drop else nip then
+      dup room>aux @
+    then
   then ;
 
 \ find path from start to finish
@@ -311,7 +313,9 @@ create openrooms #rooms cells allot
 
 : place-item
   \ add item to any reachable room
-  random-open-room room>item c! ;
+  random-open-room
+  tuck room>item c!
+  store-main-path ;
 
 : place-lock-and-item
   item-bag draw-bag 1+ dup

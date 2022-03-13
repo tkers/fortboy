@@ -1,4 +1,4 @@
-title: GrueBoy
+title: Fort Boy
 makercode: TK
 
 require textmachine-font.fs
@@ -34,8 +34,8 @@ require ./outro.fs
   7 13 at-xy ." Press"
   6 14 at-xy ." any key"
   key reseed
-  6 13 at-xy ." Building"
-  6 14 at-xy ."  Castle"
+  5 13 at-xy ." Assembling"
+  6 14 at-xy ." Fortress"
   gen-maze
   intro
   run-maze

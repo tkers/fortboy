@@ -232,12 +232,21 @@ l: XXXXXXXX
 
 \ 25
 l: XXXXXXXX
+l: XXX....X
+l: XX.XXXXX
+l: XX.XXXXX
+l: XX....XX
+l: XX.XXXXX
+l: X.XXXXXX
+l: XXXXXXXX
+
+l: XXXXXXXX
+l: XXXXXXXX
 l: XXX...XX
 l: XX.XXX.X
-l: X.XXXXXX
-l: X.XX...X
+l: X.XXXX.X
 l: X.XXX.XX
-l: XX....XX
+l: XX...XXX
 l: XXXXXXXX
 
 l: XXXXXXXX
@@ -250,21 +259,12 @@ l: X.XXXXXX
 l: XXXXXXXX
 
 l: XXXXXXXX
-l: XXXXXXXX
-l: XX.XXX.X
-l: X.XXX.XX
-l: X.XXX.XX
-l: X.XXX.XX
-l: XX....XX
-l: XXXXXXXX
-
-l: XXXXXXXX
-l: XXXXXXXX
-l: XXX...XX
-l: XX.XXX.X
-l: X......X
+l: XX.XXXXX
+l: XX.XXXXX
+l: X....XXX
 l: X.XXXXXX
-l: XX....XX
+l: X.XXX.XX
+l: XX...XXX
 l: XXXXXXXX
 
 l: XXXXXXXX

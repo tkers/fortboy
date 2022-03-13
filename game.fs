@@ -12,6 +12,7 @@ variable initial-seed
 
 require ./stars.fs
 require ./wrap.fs
+require ./divider.fs
 require ./maze.fs
 require ./intro.fs
 require ./outro.fs

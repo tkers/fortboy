@@ -397,7 +397,8 @@ require ./hex.fs
   current-room @
   dup ix>room
 
-  dup room>name        2@ center type cr cr
+  dup room>name        2@ center type cr
+  =====
   dup room>description 2@ pad place
 
   dup room>item c@

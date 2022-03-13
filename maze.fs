@@ -390,9 +390,6 @@ require ./hex.fs
   cr ." Seed: " initial-seed @ .hex
   key drop ;
 
-: .alert ( c-addr u -- )
-  page popup key drop ;
-
 : center ( c-addr u -- c-addr u )
   SCRN_X_B over - 2/ spaces ;
 
@@ -474,7 +471,7 @@ require ./hex.fs
   2dup room>lock-nesw c@
   ?dup 0 <> if
     snd-block
-    itemid>need .alert
+    itemid>need popup
     2drop exit
   then
   room>nesw c@
@@ -496,10 +493,10 @@ require ./hex.fs
     inventory c@ tuck
     ?dup 0 <> if
       snd-drop
-      itemid>drop .alert
+      itemid>drop popup
     then
     snd-take
-    dup itemid>take .alert
+    dup itemid>take popup
     inventory c!
     swap c! \ switch inventory<>room
   else
@@ -508,39 +505,39 @@ require ./hex.fs
       s" You take the gold coin" pad place
       dup 1 > if [char] s pad cappend then [char] . pad cappend
       snd-take
-      pad count .alert
+      pad count popup
       ( n ) gold-coins +!
       0 swap c!
     else
       drop
-      s" There is nothing worth taking in this room." .alert
+      s" There is nothing worth taking in this room." popup
     then
   then ;
 
 : drop-item
   inventory c@ ?dup 0 <> if
     snd-drop
-    dup itemid>drop .alert
+    dup itemid>drop popup
     current-room @ ix>room room>item c!
     0 inventory c!
   else
-    s" You do not have any items right now." .alert
+    s" You do not have any items right now." popup
   then ;
 
 : use-item
   inventory c@ ?dup 0 = if
-    s" You do not have any items right now." .alert
+    s" You do not have any items right now." popup
     exit
   then
 
   current-room @ ix>room room>any-lock@ ?dup 0= if
     drop \ todo use item name somehow?
-    s" You scratch your head. Your item is of no use here." .alert exit
+    s" You scratch your head. Your item is of no use here." popup exit
   then
 
   over <> if
     drop \ todo use item name somehow?
-    s" Your item does not help you here. Let's keep looking!" .alert exit
+    s" Your item does not help you here. Let's keep looking!" popup exit
   then
 
   current-room @ ix>room
@@ -553,7 +550,7 @@ require ./hex.fs
   0 inventory c!
 
   snd-unlock
-  itemid>use .alert ;
+  itemid>use popup ;
 
 : key>action
   case

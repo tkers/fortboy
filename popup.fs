@@ -35,4 +35,4 @@ RAM
     then
   repeat bl-bl-3 3 type type ;
 
-: popup ( c-addr u -- ) .frame .tiny ;
+: popup ( c-addr u -- ) page .frame .tiny key drop ;

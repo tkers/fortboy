@@ -11,6 +11,7 @@ require time.fs
 variable initial-seed
 
 require ./stars.fs
+require ./partial-page.fs
 require ./wrap.fs
 require ./divider.fs
 require ./maze.fs

@@ -74,7 +74,7 @@ endcase ;
   bl pad cappend
 
   pad count .wrapped
-  key drop page
+  key drop partial-page
 
   s" Being a simple " pad place
   profession pad append

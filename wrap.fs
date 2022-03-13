@@ -15,7 +15,7 @@ SCRN_Y_B constant max-height
     1+ type cr
     r> /string
     cursor-y @ max-height = if
-      key drop page
+      key drop partial-page
     then
   repeat type cr ;
 

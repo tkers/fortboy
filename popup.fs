@@ -16,6 +16,10 @@ bl c, bl c,  7 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2
 here swap - constant popup-frame-size
 RAM
 
+: .frame
+  popup-frame popup-frame-size 0 3 at-xy type
+  0 4 at-xy ;
+
 : .tiny ( buf len -- )
   begin
     dup 14 >
@@ -24,11 +28,11 @@ RAM
     begin 1- 2dup + c@ bl = until
     dup 1+ >r
     begin 1- 2dup + c@ bl <> until
-    1+ type cr bl-bl-3 3 type
+    bl-bl-3 3 type 1+ type cr
     r> /string
-  repeat type ;
+    cursor-y @ 14 = if
+      key drop .frame
+    then
+  repeat bl-bl-3 3 type type ;
 
-: popup
-  popup-frame popup-frame-size
-  0 3 at-xy type
-  3 4 at-xy .tiny ;
+: popup ( c-addr u -- ) .frame .tiny ;

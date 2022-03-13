@@ -361,7 +361,8 @@ variable current-room
 variable gold-coins
 variable inventory
 
-: show-map
+require ./hex.fs
+: debug:show-map
   page
   #rooms 0 do
     #rooms 0 do
@@ -373,7 +374,7 @@ variable inventory
     loop
     cr
   loop
-  cr ." Seed: " initial-seed @ .
+  cr ." Seed: " initial-seed @ .hex
   key drop ;
 
 : .alert ( c-addr u -- )
@@ -565,7 +566,7 @@ variable inventory
     k-a      of take-item endof
     k-b      of drop-item endof
     k-start  of  use-item endof
-    k-select of  show-map endof
+    k-select of debug:show-map endof
   endcase ;
 
 : win?

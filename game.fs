@@ -10,6 +10,7 @@ require time.fs
 
 variable initial-seed
 
+require ./stars.fs
 require ./wrap.fs
 require ./maze.fs
 require ./intro.fs
@@ -29,6 +30,7 @@ require ./outro.fs
 
 : main
   init
+  stars stars-len type
   4 14 at-xy ." Press Start"
   wait-for-key reseed
   2 14 at-xy ." Building Castle"

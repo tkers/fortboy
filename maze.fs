@@ -397,7 +397,8 @@ require ./hex.fs
   SCRN_X_B over - 2/ spaces ;
 
 : look-room ( -- )
-  current-room @ ix>room
+  current-room @
+  dup ix>room
 
   dup room>name        2@ center type cr cr
   dup room>description 2@ pad place
@@ -421,17 +422,22 @@ require ./hex.fs
     then
   then
 
-  bl pad cappend
-  s" You can see " pad append
-
   0 swap
   dup room>north c@ 0 <> if swap 1+ swap then
   dup room>east  c@ 0 <> if swap 1+ swap then
   dup room>south c@ 0 <> if swap 1+ swap then
   dup room>west  c@ 0 <> if swap 1+ swap then
 
-  over 1 = if s" a door " else s" doors " then pad append
-  s" leading to the " pad append
+  bl pad cappend
+  over 1 = if
+    rot dup 1 = if
+      s" A door is leading to the " pad append
+    else
+      s" You can only go back " pad append
+    then -rot
+  else
+    s" Doors lead to the " pad append
+  then
 
   dup room>north c@ 0 <> if
     s" North" pad append
@@ -460,28 +466,8 @@ require ./hex.fs
   nip
   [char] . pad cappend
 
-  \ dup room>lock-north c@ 0 <> if
-  \   bl pad cappend
-  \   s" The path to the North is blocked." pad append
-  \ then
-
-  \ dup room>lock-east c@ 0 <> if
-  \   bl pad cappend
-  \   s" The path to the East is blocked." pad append
-  \ then
-
-  \ dup room>lock-south c@ 0 <> if
-  \   bl pad cappend
-  \   s" The path to the South is blocked." pad append
-  \ then
-
-  \ dup room>lock-west c@ 0 <> if
-  \   bl pad cappend
-  \   s" The path to the West is blocked." pad append
-  \ then
-
   pad count .wrapped
-  drop ;
+  drop drop ;
 
 : go-room ( dir -- )
   current-room @ ix>room swap

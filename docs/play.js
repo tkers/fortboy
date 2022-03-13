@@ -7,6 +7,7 @@ const palette = {
   255: [0xf3, 0xfe, 0xe1],
 }
 
+let lastSeed = 0
 const setRenderTarget = (gameboy, canvas) => {
   const ctx = canvas.getContext('2d')
   gameboy.gpu.on('frame', (img) => {
@@ -21,6 +22,15 @@ const setRenderTarget = (gameboy, canvas) => {
       data.data[i + 2] = col[2]
     }
     ctx.putImageData(data, 0, 0)
+
+    const seed =
+      (gameboy._mmu._wram[0xc014 - 0xc000 + 1] << 8) |
+      gameboy._mmu._wram[0xc014 - 0xc000]
+    if (seed !== lastSeed) {
+      lastSeed = seed
+      const seedHex = seed.toString(16).padStart(4, '0')
+      console.log('reseed:', seedHex)
+    }
   })
 }
 

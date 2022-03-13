@@ -321,7 +321,9 @@ create openrooms #rooms cells allot
 
 : place-gold
   \ add gold to any room
-  random-room room>gold c! ;
+  random-room room>gold
+  dup c@ rot +
+  swap c! ;
 
 : gen-maze
   \ clear the grid & room data
@@ -343,9 +345,13 @@ create openrooms #rooms cells allot
   fill-item-bag
 
   \ sprinkle some gold coins around
-  3 random 1+ place-gold
-  3 random 1+ place-gold
+  \ 10 total, spread over 1-6 rooms
   1 place-gold
+  1 place-gold
+  1 place-gold
+  1 place-gold
+  3 place-gold
+  3 place-gold
 
   \ TODO: consider placing this always at the end?
   place-lock-and-item

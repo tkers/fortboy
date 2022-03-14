@@ -1,7 +1,7 @@
 title: Fort Boy
 makercode: TK
 
-require textmachine-font.fs
+require ./src/textmachine-font.fs
 
 require term.fs
 require random.fs
@@ -10,13 +10,13 @@ require time.fs
 
 variable initial-seed
 
-require ./stars.fs
-require ./partial-page.fs
-require ./wrap.fs
-require ./divider.fs
-require ./maze.fs
-require ./intro.fs
-require ./outro.fs
+require ./src/stars.fs
+require ./src/partial-page.fs
+require ./src/wrap.fs
+require ./src/divider.fs
+require ./src/maze.fs
+require ./src/intro.fs
+require ./src/outro.fs
 
 : reseed ( u -- )
   8 lshift

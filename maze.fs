@@ -318,6 +318,8 @@ create openrooms #rooms cells allot
   store-main-path ;
 
 : place-lock-and-item
+  \ no space to add more locks, skip
+  roompath-length @ 2 < if exit then
   item-bag draw-bag 1+ dup
   place-lock
   erase-depths annotate-depths store-open-rooms

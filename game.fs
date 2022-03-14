@@ -1,5 +1,5 @@
-title: Fort Boy
-makercode: TK
+title: FortBoy
+makercode: TJ
 
 require ./src/textmachine-font.fs
 

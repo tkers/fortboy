@@ -9,7 +9,7 @@ Running this rom from an emulator (or flashing it to a physical cartridge) is hi
 
 > _Be brave, unlikely hero. Adventure awaits!_
 
-![FortBoy Title Screen](title.png)
+![FortBoy Title Screen](docs/title.png)
 
 ### Controls
 

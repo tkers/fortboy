@@ -28,11 +28,11 @@ require ./hero.fs
 
 : atmosphere
   7 random case
-    0 of s" sunny and bright" endof
-    1 of s" warm and cozy" endof
-    2 of s" small and windowless" endof
-    3 of s" beautiful, richly-furnished" endof
-    4 of s" bright and colorful" endof
+    0 of s" large and frightening" endof
+    1 of s" vast and daunting" endof
+    2 of s" dark and petrifying" endof
+    3 of s" gloomy and menacing" endof
+    4 of s" ill-lit and cold" endof
     5 of s" sinister and cobwebbed" endof
     6 of s" dusty and bleak" endof
 endcase ;

@@ -260,10 +260,10 @@ create roompath #rooms cells allot
   -1 roompath-length +! \ remove starting room
   drop drop ;
 
-: debug:show-main-path
-  roompath-length @ 0 do
-    roompath I cells + @ room>name 2@ type cr
-  loop ;
+\ : debug:show-main-path
+\   roompath-length @ 0 do
+\     roompath I cells + @ room>name 2@ type cr
+\   loop ;
 
 : in-main-path? ( x -- f )
   false
@@ -290,10 +290,10 @@ create openrooms #rooms cells allot
     then
   loop ;
 
-: debug:show-open-rooms
-  openrooms-length @ 0 do
-    openrooms I cells + @ room>name 2@ type cr
-  loop ;
+\ : debug:show-open-rooms
+\   openrooms-length @ 0 do
+\     openrooms I cells + @ room>name 2@ type cr
+\   loop ;
 
 : random-open-room
   openrooms-length @ 1- random 1+ \ exclude start
@@ -377,21 +377,21 @@ variable current-room
 variable gold-coins
 variable inventory
 
-require ./hex.fs
-: debug:show-map
-  page
-  #rooms 0 do
-    #rooms 0 do
-      I J xy>grid c@ case
-        0 of ." ." endof
-        current-room @ of ." i" endof
-        ." X"
-      endcase
-    loop
-    cr
-  loop
-  cr ." Seed: " initial-seed @ .hex
-  key drop ;
+\ require ./hex.fs
+\ : debug:show-map
+\   page
+\   #rooms 0 do
+\     #rooms 0 do
+\       I J xy>grid c@ case
+\         0 of ." ." endof
+\         current-room @ of ." i" endof
+\         ." X"
+\       endcase
+\     loop
+\     cr
+\   loop
+\   cr ." Seed: " initial-seed @ .hex
+\   key drop ;
 
 : center ( c-addr u -- c-addr u )
   SCRN_X_B over - 2/ spaces ;
@@ -590,7 +590,7 @@ require ./hex.fs
     k-a      of take-item endof
     k-b      of  use-item endof
     k-select of drop-item endof
-    k-start  of debug:show-map endof
+    \ k-start  of debug:show-map endof
   endcase ;
 
 : win?

@@ -483,13 +483,21 @@ require ./hex.fs
     current-room ! page
   then ;
 
-: room>any-lock@ ( room -- u )
+: has-no-locks? ( room -- f )
   0
   over room>lock-north c@ or
   over room>lock-east  c@ or
   over room>lock-south c@ or
   over room>lock-west  c@ or
-  nip ;
+  nip 0= ;
+
+: matches-any-lock? ( room item -- f )
+  over room>lock-north c@ over = >r
+  over room>lock-east c@ over = >r
+  over room>lock-south c@ over = >r
+  over room>lock-west c@ over = >r
+  2drop
+  r> r> r> r> or or or ;
 
 : take-item ( -- )
   current-room @ ix>room room>item
@@ -534,22 +542,39 @@ require ./hex.fs
     exit
   then
 
-  current-room @ ix>room room>any-lock@ ?dup 0= if
+  current-room @ ix>room has-no-locks? if
     drop \ todo use item name somehow?
     s" You scratch your head. Your item is of no use here." popup exit
   then
 
-  over <> if
+  current-room @ ix>room over matches-any-lock? invert if
     drop \ todo use item name somehow?
     s" Your item does not help you here. Let's keep looking!" popup exit
   then
 
-  current-room @ ix>room
-    dup room>lock-north 0 swap c!
-    dup room>lock-east  0 swap c!
-    dup room>lock-south 0 swap c!
-    dup room>lock-west  0 swap c!
-  drop
+  current-room @ ix>room swap \ room item
+
+  over room>lock-north c@
+  over = if
+    over room>lock-north 0 swap c!
+  then
+
+  over room>lock-east c@
+  over = if
+    over room>lock-east 0 swap c!
+  then
+
+  over room>lock-south c@
+  over = if
+    over room>lock-south 0 swap c!
+  then
+
+  over room>lock-west c@
+  over = if
+    over room>lock-west 0 swap c!
+  then
+
+  nip
 
   0 inventory c!
 

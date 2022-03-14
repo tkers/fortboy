@@ -1,28 +1,35 @@
 body {
   text-align: center;
-  color: #b6d69b;
+  background-color: #191b18;
+  color: #989e94;
   font-family: monospace;
-  padding-top: 16px;
+  font-size: 12px;
+  padding-top: 32px;
 }
 
 canvas {
   height: 324px;
   background-color: #f3fee1;
-  border: 1px solid #b6d69b;
-  padding: 8px;
+  padding: 4px;
   margin: 8px;
-  border-radius: 8px;
+  border-radius: 4px;
   image-rendering: pixelated;
 }
 
+footer {
+  margin: 16px;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 #000 inset;
+  cursor: default;
+}
+
 a {
-  color: #619075;
+  color: #95c270;
 }
 
 a:hover {
   text-decoration: none;
-}
-
-strong {
-  color: #203341;
 }

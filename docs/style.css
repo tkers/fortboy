@@ -4,16 +4,81 @@ body {
   color: #989e94;
   font-family: monospace;
   font-size: 12px;
-  padding-top: 32px;
+  padding: 0;
+  margin: 0;
 }
 
 canvas {
-  height: 324px;
+  width: calc(100% - 16px);
+  max-width: 360px;
   background-color: #f3fee1;
   padding: 4px;
   margin: 8px;
   border-radius: 4px;
+  box-sizing: border-box;
   image-rendering: pixelated;
+}
+
+.controls {
+  margin: 32px auto;
+}
+.dpad,
+.ab {
+  display: inline-block;
+  width: 160px;
+  height: 160px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+.key {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #989e94;
+  color: #95c270;
+  font-family: sans-serif;
+  font-weight: bold;
+  position: absolute;
+  box-sizing: border-box;
+  line-height: 50px;
+}
+#k-u {
+  top: 0;
+  left: 50px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: none;
+}
+#k-l {
+  top: 50px;
+  left: 0px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-right: none;
+}
+#k-r {
+  top: 50px;
+  left: 100px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-left: none;
+}
+#k-d {
+  top: 100px;
+  left: 50px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top: none;
+}
+#k-a {
+  top: 30px;
+  right: 0;
+  border-radius: 50px;
+}
+#k-b {
+  top: 60px;
+  right: 75px;
+  border-radius: 50px;
 }
 
 footer {
@@ -32,4 +97,14 @@ a {
 
 a:hover {
   text-decoration: none;
+}
+
+/* hide virual keys on desktop */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    padding-top: 32px;
+  }
+  .controls {
+    display: none;
+  }
 }

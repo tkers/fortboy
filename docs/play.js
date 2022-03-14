@@ -54,10 +54,31 @@ const initGameboy = (canvas) => {
   return gameboy
 }
 
+const virtualKeyMap = {
+  '#k-l': 37,
+  '#k-u': 38,
+  '#k-r': 39,
+  '#k-d': 40,
+  '#k-a': 88,
+  '#k-b': 90,
+  // '#k-start': 13,
+  // '#k-select': 16
+}
+
+const attachVirtualKeys = (gb) => {
+  Object.entries(virtualKeyMap).forEach(([query, keyCode]) => {
+    document.querySelector(query).addEventListener('touchstart', () => {
+      gb.joypad.keyDown(keyCode)
+      setTimeout(() => gb.joypad.keyUp(keyCode), 10)
+    })
+  })
+}
+
 const playRom = (rom, canvas) => {
   const gameboy = initGameboy(canvas)
   gameboy.loadCart(rom)
   gameboy.start()
+  attachVirtualKeys(gameboy)
   return () => gameboy.reset()
 }
 

@@ -42,7 +42,7 @@
      7 of s" A loud roar and a puff stops you in your tracks. Is it a zombie? A demon? No, just the boiler room of the castle. Phew."   endof
      8 of s" A room full of life-sized portraits piques your curiosity. The detail in each painting is incredible. You nearly expect to see them move."  endof
      9 of s" Something crunches beneath your feet and you stagger. The floor is uneven-the pile of bones covering every inch not offering a stable ground to walk on."   endof
-    10 of s" A small climb later, you find yourself from a dusty attic: the home of badly taxidermied animals with their bead-eyes and matted fur. " endof
+    10 of s" A small climb later, you find yourself in a dusty attic: the home of badly taxidermied animals with their bead-eyes and matted fur." endof
     11 of s" A long corridor opens before your eyes, its narrow hallway dark and gloomy. The torches on each side of it offer little light." endof
     12 of s" The ceiling of the tunnel is low, and you can barely stand to your full length. Please stay in your webs, spiders! I'm not a fly." endof
     13 of s" It's nothing but a simple hall with dried flower arrangements placed on small tables." endof
@@ -52,7 +52,7 @@
     17 of s" Rows after rows of wooden benches sit facing the altar, on which softly flickering candles illuminate a wooden cross." endof
     18 of s" Bags of wheat and barrels of ale cover every last inch of the pantry. Somewhere a small mouse squeaks." endof
     19 of s" The splashing of an overflowing toilet fills the otherwise silent room, and suddenly you wish you had listened to your mother. She always did tell you to become a plumber." endof
-    20 of s" A King sized bed stands in the middle of the room, the satin sheets inviting. If it wasn't for the skeleton resting in the mids of them, that is." endof
+    20 of s" A King sized bed stands in the middle of the room, the satin sheets inviting. If it wasn't for the skeleton resting in the midst of them, that is." endof
     21 of s" Clattering chains hang from the ceiling, and the floor beneath feels sticky with something red. People should be more careful when carrying jars of jam." endof
     22 of s" Deep green vines climb along the beautiful statue, its surface tainted grey during the years spent outside. All around it roses of red and pink bloom in their full glory." endof
     23 of s" Sudden goosebumps run along your skin, and soon you spot the reason: the doll in the middle of the room following each of your steps. No thank you!" endof

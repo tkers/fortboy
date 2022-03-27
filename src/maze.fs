@@ -592,6 +592,7 @@ variable inventory
     k-a      of take-item endof
     k-b      of  use-item endof
     k-select of drop-item endof
+    k-start  of show-help endof
     \ k-start  of debug:show-map endof
   endcase ;
 

@@ -14,6 +14,7 @@ require ./src/emit-bytes.fs
 require ./src/string-list.fs
 require ./src/stars.fs
 require ./src/partial-page.fs
+require ./src/menu.fs
 require ./src/wrap.fs
 require ./src/divider.fs
 require ./src/maze.fs
@@ -33,7 +34,7 @@ require ./src/outro.fs
   1234 dup seed ! initial-seed ! ;
 
 : title-screen
-  stars stars-len type
+  splash-screen
   7 13 at-xy ." Press"
   6 14 at-xy ." any key"
   key reseed

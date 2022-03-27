@@ -1,4 +1,3 @@
-require compat.fs
 require gbhw.fs
 
 SCRN_X_B constant max-width

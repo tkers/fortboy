@@ -8,6 +8,8 @@
   splash-screen
   1 12 at-xy ." Collect gold and"
   3 13 at-xy ." escape the fort!"
-  0 15 at-xy ."      [+] Walk"
-  0 16 at-xy ."  [A] Take [B] Use"
+  6 15 at-xy ." [+]Walk"
+  2 16 at-xy ." [A]Take [B]Use"
+  3 16 at-xy 29 emit
+  11 16 at-xy 28 emit
   key drop ;

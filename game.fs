@@ -37,17 +37,18 @@ require ./src/outro.fs
   splash-screen
   7 13 at-xy ." Press"
   6 14 at-xy ." any key"
-  key reseed
+  key reseed ;
+
+: play-game
+  splash-screen
   5 13 at-xy ." Assembling"
-  6 14 at-xy ." Fortress" ;
+  6 14 at-xy ." Fortress"
+  gen-maze
+  show-intro run-maze show-outro ;
 
 : main
   init
   begin
-    page
     title-screen
-    gen-maze
-    show-intro
-    run-maze
-    show-outro
+    play-game
   again ;

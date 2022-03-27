@@ -14,12 +14,13 @@ require ./src/emit-bytes.fs
 require ./src/string-list.fs
 require ./src/stars.fs
 require ./src/partial-page.fs
-require ./src/menu.fs
+require ./src/screens.fs
 require ./src/wrap.fs
 require ./src/divider.fs
 require ./src/maze.fs
 require ./src/intro.fs
 require ./src/outro.fs
+require ./src/menu.fs
 
 : reseed ( u -- )
   8 lshift
@@ -39,16 +40,8 @@ require ./src/outro.fs
   6 14 at-xy ." any key"
   key reseed ;
 
-: play-game
-  splash-screen
-  5 13 at-xy ." Assembling"
-  6 14 at-xy ." Fortress"
-  gen-maze
-  show-intro run-maze show-outro ;
-
 : main
   init
-  begin
-    title-screen
-    play-game
-  again ;
+  title-screen
+  0 menu-selection !
+  begin show-menu again ;

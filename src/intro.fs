@@ -1,51 +1,57 @@
 require ./hero.fs
 
-: month
-  12 random case
-    0 of s" January" endof
-    1 of s" February" endof
-    2 of s" March" endof
-    3 of s" April" endof
-    4 of s" May" endof
-    5 of s" June" endof
-    6 of s" July" endof
-    7 of s" August" endof
-    8 of s" September" endof
-    9 of s" October" endof
-   10 of s" November" endof
-   11 of s" December" endof
-  endcase ;
+ROM
 
-: state-of-being
-  6 random case
-    0 of s" bounding headache" endof
-    1 of s" deep frown" endof
-    2 of s" soft gasp" endof
-    3 of s" big yawn" endof
-    4 of s" small shiver" endof
-    5 of s" flinch" endof
-  endcase ;
+start-strings
+  -" January"
+  -" February"
+  -" March"
+  -" April"
+  -" May"
+  -" June"
+  -" July"
+  -" August"
+  -" September"
+  -" October"
+  -" November"
+  -" December"
+end-strings: month[]
 
-: atmosphere
-  7 random case
-    0 of s" large and frightening" endof
-    1 of s" vast and daunting" endof
-    2 of s" dark and petrifying" endof
-    3 of s" gloomy and menacing" endof
-    4 of s" ill-lit and cold" endof
-    5 of s" sinister and cobwebbed" endof
-    6 of s" dusty and bleak" endof
-endcase ;
+: month 12 random month[] ;
 
-: state-of-mind
-  6 random case
-    0 of s" eye lids feel heavy" endof
-    1 of s" vision is blurred" endof
-    2 of s" thoughts are clouded" endof
-    3 of s" head feels empty" endof
-    4 of s" stomach rumbles" endof
-    5 of s" head is spinning" endof
-  endcase ;
+start-strings
+  -" bounding headache"
+  -" deep frown"
+  -" soft gasp"
+  -" big yawn"
+  -" small shiver"
+  -" flinch"
+end-strings: state-of-being[]
+
+: state-of-being 6 random state-of-being[] ;
+
+start-strings
+  -" large and frightening"
+  -" vast and daunting"
+  -" dark and petrifying"
+  -" gloomy and menacing"
+  -" ill-lit and cold"
+  -" sinister and cobwebbed"
+  -" dusty and bleak"
+end-strings: atmosphere[]
+
+: atmosphere 7 random atmosphere[] ;
+
+start-strings
+  -" eye lids feel heavy"
+  -" vision is blurred"
+  -" thoughts are clouded"
+  -" head feels empty"
+  -" stomach rumbles"
+  -" head is spinning"
+end-strings: state-of-mind[]
+
+: state-of-mind 6 random state-of-mind[] ;
 
 : show-intro
   page

@@ -11,6 +11,7 @@ require time.fs
 variable initial-seed
 
 require ./src/emit-bytes.fs
+require ./src/string-list.fs
 require ./src/stars.fs
 require ./src/partial-page.fs
 require ./src/wrap.fs

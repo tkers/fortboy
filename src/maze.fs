@@ -38,6 +38,8 @@ include items.fs
 : rooms room% * ;
 :m rooms room% * ;
 
+RAM
+
 \ list with push and peek
 variable roomlist-length
 create roomlist #rooms rooms allot

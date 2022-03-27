@@ -40,3 +40,14 @@ others, so if things feel a bit too easy, try to play another round.
 
 _For completionists: there are 10 gold coins to collect in each of the 2048
 possible fortresses._
+
+### 7DRL version
+
+You can find the 7DRL build (commit
+[6ac6e3c](https://github.com/tkers/fortboy/tree/7drl)) of FortBoy here:
+
+- [Download 7DRL ROM](https://tkers.dev/fortboy/fortboy-7drl.gb)
+- [Play 7DRL version](https://tkers.dev/fortboy/7drl)
+
+The updated version features some improvements, though the main gameplay has
+remained the same as in the original.

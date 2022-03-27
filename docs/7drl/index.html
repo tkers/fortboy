@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <title>FortBoy (7DRL version)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../style.css" />
+    <script src="../gameboy.min.js"></script>
+    <script src="../play.js"></script>
+    <script>
+      window.addEventListener('load', () => {
+        playFromUrl('../fortboy-7drl.gb', document.getElementById('lcd'))
+      })
+    </script>
+  </head>
+  <body>
+    <canvas id="lcd" class="pixelated" width="160" height="144"></canvas><br />
+    <section class="controls">
+      <div class="dpad">
+        <div class="key" id="k-u">▲&#xFE0E;</div>
+        <div class="key" id="k-l">◀&#xFE0E;</div>
+        <div class="key" id="k-r">▶&#xFE0E;</div>
+        <div class="key" id="k-d">▼&#xFE0E;</div>
+      </div>
+      <div class="ab">
+        <div class="key" id="k-a">A</div>
+        <div class="key" id="k-b">B</div>
+      </div>
+    </section>
+    <footer>
+      FortBoy &bull; 7DRL version &bull;
+      <a href="../fortboy-7drl.gb" download>download ROM</a> &bull;
+      <a href="https://github.com/tkers/fortboy">Source</a>
+    </footer>
+  </body>
+</html>

@@ -25,7 +25,7 @@ RAM variable menu-selection
   splash-screen
   7 13 at-xy 0 .caret ." Play"
   7 14 at-xy 1 .caret ." Help"
-  key case
+  key reseed case
     k-up   of -1 menu-move endof
     k-down of  1 menu-move endof
     k-a    of menu-confirm endof

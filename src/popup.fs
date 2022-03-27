@@ -1,18 +1,18 @@
 ROM
-create bl-bl-3 bl c, bl c, 3 c,
+create bl-bl-3 emit-bytes( 32 32 3 )
 here create popup-frame
-bl c, bl c,  5 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  1 c,  6 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  3 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,  4 c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c, bl c,
-bl c, bl c,  7 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  2 c,  8 c,
+emit-bytes( 32 32  5  1  1  1  1  1  1  1  1  1  1  1  1  1  1  6 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  3 32 32 32 32 32 32 32 32 32 32 32 32 32 32  4 32 32 32 32 32 32 32 32 32 32 32 32 32 32 )
+emit-bytes( 32 32  7  2  2  2  2  2  2  2  2  2  2  2  2  2  2  8 )
 here swap - constant popup-frame-size
 RAM
 

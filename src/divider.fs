@@ -1,6 +1,6 @@
 ROM
 here create dots
-15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c, 15 c,
+emit-bytes( 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 )
 here swap - constant dots-len
 RAM
 

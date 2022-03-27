@@ -1,35 +1,11 @@
 ROM
 create vowels
-char a c,
-char e c,
-char i c,
-char o c,
-char u c,
+emit-bytes( 'a 'e 'i 'o 'u )
 
 create consonants
-char b c,
-char d c,
-char f c,
-char g c,
-char k c,
-char l c,
-char m c,
-char n c,
-char p c,
-char r c,
-char s c,
-char t c,
-char v c,
-char z c,
+emit-bytes( 'b 'd 'f 'g 'k 'l 'm 'n 'p 'r 's 't 'v 'z )
 \ only for first consonant
-char c c,
-char h c,
-char j c,
-char q c,
-char w c,
-char x c,
-char y c,
-
+emit-bytes( 'c 'h 'j 'q 'w 'x 'y )
 RAM
 
 : random-vowel 5 random vowels + c@ ;

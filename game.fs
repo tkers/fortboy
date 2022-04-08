@@ -32,7 +32,7 @@ require ./src/menu.fs
   install-font
   init-term
   init-input
-  1234 dup seed ! initial-seed ! ;
+  $7DFB dup seed ! initial-seed ! ;
 
 : main
   init

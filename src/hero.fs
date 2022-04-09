@@ -13,7 +13,7 @@ RAM
 : random-consonant-snd 14 random consonants + c@ ;
 : to-upper 32 - ;
 
-create fname 6 chars allot
+create fname 5 chars cell+ allot
 : first-name
   0 fname !
   random-consonant to-upper fname cappend

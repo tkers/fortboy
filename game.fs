@@ -24,6 +24,7 @@ require ./src/screens.fs
 require ./src/wrap.fs
 require ./src/divider.fs
 require ./src/maze.fs
+require ./src/play.fs
 require ./src/intro.fs
 require ./src/outro.fs
 require ./src/menu.fs

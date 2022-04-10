@@ -19,9 +19,4 @@
   then
   s" the only proof that any of it was real in the first place. Or was it? The memories are already starting to fade..." pad append
   pad count .wrapped
-  key drop
-  page
-  2 8 at-xy ." You made it out!"
-  3 9 at-xy ." Gold coins: " gold-coins ?
-  snd-hooray
   key drop ;

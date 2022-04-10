@@ -203,7 +203,6 @@ variable inventory
     k-a      of take-item endof
     k-b      of  use-item endof
     k-select of drop-item endof
-    k-start  of show-help endof
   endcase ;
 
 : win?

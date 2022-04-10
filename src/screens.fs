@@ -1,3 +1,5 @@
+require time.fs
+
 : splash-screen
   0 0 at-xy
   stars stars-len type
@@ -26,3 +28,10 @@
   1 15 at-xy ." Font by @Polyducks"
   1 16 at-xy ." Running on GBForth"
   key drop ;
+
+: show-gold
+  splash-screen 800 ms
+  2 13 at-xy ." You made it out!" 1200 ms
+  3 14 at-xy ." Gold coins: " gold-coins ?
+  snd-hooray
+  begin key k-start = until ;

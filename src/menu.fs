@@ -5,7 +5,7 @@ RAM variable menu-selection
   5 13 at-xy ." Assembling"
   6 14 at-xy ." Fortress"
   gen-maze
-  show-intro run-maze show-outro ;
+  show-intro run-maze show-outro show-gold ;
 
 : menu-move ( n -- )
   menu-selection @ +

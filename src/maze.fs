@@ -40,17 +40,12 @@ RAM
 \ list with push and peek
 variable roomlist-length
 create roomlist #rooms rooms allot
-: next-room-index roomlist-length @ 1+ ;
 : next-room-addr roomlist-length @ rooms roomlist + ;
-: last-room-index roomlist-length @ ;
+: next-room-ix roomlist-length @ 1+ ;
+: last-room-ix roomlist-length @ ;
 
 : push-room ( xy -- )
-  next-room-addr >r
-       ( xy ) r@ room>coord !
-  room-bag draw-bag
-  dup roomid>name r@ room>name 2!
-      roomid>desc r@ room>description 2!
-  rdrop
+  next-room-addr room>coord !
   1 roomlist-length +! ;
 
 : ix>room ( u -- x )
@@ -61,11 +56,8 @@ create roomlist #rooms rooms allot
 \ occupancy grid to check free space
 CREATE grid #grid allot
 
-: occupy-grid next-room-index swap c! ;
+: occupy-grid next-room-ix swap c! ;
 : is-occupied? c@ 0 <> ;
-
-: xy>grid ( x y -- addr )
-  #rooms * + grid + ;
 
 : in-range? ( addr -- f )
   dup [ grid 1- ]L >
@@ -145,7 +137,7 @@ CREATE grid #grid allot
     dup is-free? if \ ix dir coord2
       dup occupy-grid
       push-room \ ix dir
-      last-room-index dig-tunnel
+      last-room-ix dig-tunnel
       1
     else
       drop drop drop
@@ -159,6 +151,11 @@ CREATE grid #grid allot
 value curr-visit
 value next-visit
 variable curr-depth
+
+: erase-depths
+  #rooms 1+ 1 DO
+    0 I ix>room room>aux !
+  LOOP ;
 
 \ floodfill for depth calculation
 : annotate-depths
@@ -215,11 +212,6 @@ variable curr-depth
     over = if I swap drop leave then
   LOOP
   ix>room ;
-
-: erase-depths
-  #rooms 1+ 1 DO
-    0 I ix>room room>aux !
-  LOOP ;
 
 \ used for path finding
 variable roompath-length
@@ -336,21 +328,34 @@ create openrooms #rooms cells allot
 : gen-maze
   \ clear the grid & room data
   grid #grid erase
-  0 roomlist-length !
   roomlist #rooms rooms erase
-  fill-room-bag
+  0 roomlist-length !
 
-  \ create rooms and add depth info
+  \ create room layout on grid
   shape-maze
+
+  \ calculate depths and mark deepest as final
   annotate-depths
-
   find-deepest-room
-    dup room>final 1 swap c! \ mark as final
-    dup store-main-path
-  drop
+  dup room>final 1 swap c!
+  store-main-path
 
-  \ shuffle item order
+  \ add flavour text to rooms
+  fill-room-bag
+  #rooms 1+ 1 do
+    I ix>room room>final c@ 0= if
+      room-bag draw-bag dup
+      roomid>name I ix>room room>name 2!
+      roomid>desc I ix>room room>description 2!
+    then
+  loop
+
+  \ add obstacles and items
   fill-item-bag
+  place-lock-and-item
+  place-lock-and-item
+  place-lock-and-item
+  place-lock-and-item
 
   \ sprinkle some gold coins around
   \ 10 total, spread over 1-7 rooms
@@ -360,10 +365,4 @@ create openrooms #rooms cells allot
   1 place-gold
   1 place-gold
   2 place-gold
-  3 place-gold
-
-  \ TODO: consider placing this always at the end?
-  place-lock-and-item
-  place-lock-and-item
-  place-lock-and-item
-  place-lock-and-item ;
+  3 place-gold ;

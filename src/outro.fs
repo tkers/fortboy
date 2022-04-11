@@ -2,7 +2,9 @@
   page
   s" Outside" center type cr
   =====
-  s" You squint your eyes at the sudden change in brightness. You're back outside! The adventure " pad place
+  s" You squint your eyes at the sudden change in brightness. You're back outside!"
+  .wrapped cr
+  s" The adventure " pad place
   gold-coins @ ?dup 0= if
     s" behind you is " pad append
   else

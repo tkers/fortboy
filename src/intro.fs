@@ -84,6 +84,7 @@ end-strings: state-of-mind[]
 
   s" Being a simple " pad place
   profession pad append
-  s" , you have no reason to be in this strange place. Better take a look around and unravel this mystery. Be brave, unlikely hero. Adventure awaits!" pad append
-  pad count .wrapped
+  s" , you have no reason to be in a strange place like this. Better take a look around and unravel this mystery." pad append
+  pad count .wrapped cr
+  s" Be brave, unlikely hero. Adventure awaits!" .wrapped
   key drop ;

@@ -317,10 +317,11 @@ create openrooms #rooms cells allot
   ( n ) place-item ;
 
 : place-gold
-  \ add gold to any non-final room
+  \ add gold to any non-final and non-item room
   0 begin
     drop random-room
     dup room>final c@ 0=
+    over room>item c@ 0= and
   until
   room>gold dup c@ rot +
   swap c! ;

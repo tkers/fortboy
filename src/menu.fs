@@ -9,13 +9,15 @@ RAM variable menu-selection
 
 : menu-move ( n -- )
   menu-selection @ +
-  0 max 2 min
+  dup 0 < if 3 + then
+  dup 2 > if 3 - then
   menu-selection ! ;
 
 : .caret ( u -- c )
   menu-selection @ = if 9 else bl then emit ;
 
 : show-size
+  1 menu-selection !
   begin
     splash-screen
     6 13 at-xy 0 .caret ." Humble"
@@ -31,7 +33,7 @@ RAM variable menu-selection
 
 : menu-confirm
   menu-selection @ case
-    0 of show-size endof
+    0 of show-size 0 menu-selection ! endof
     1 of show-help endof
     2 of show-info endof
   endcase ;

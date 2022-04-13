@@ -339,9 +339,9 @@ create openrooms #rooms-max cells allot
     2 of #rooms-max endof
   endcase to #rooms ;
 
-: gen-maze
+: gen-maze ( u -- )
   \ update the world size and difficulty
-  1 set-fort-size
+  set-fort-size
 
   \ clear the grid & room data
   grid #grid erase

@@ -6,10 +6,13 @@ require ./bag.fs
 :m square dup * ;
 
 \ number of rooms to create
-14 constant #rooms-max
+ 8 constant #rooms-min
+14 constant #rooms-med
+20 constant #rooms-max
 #rooms-max square constant #grid-max
 
-: #rooms #rooms-max ;
+\ the current world size
+RAM value #rooms
 : #grid #rooms dup * ;
 
 ROM
@@ -329,7 +332,17 @@ create openrooms #rooms-max cells allot
   room>gold dup c@ rot +
   swap c! ;
 
+: set-fort-size ( u -- )
+  case
+    0 of #rooms-min endof
+    1 of #rooms-med endof
+    2 of #rooms-max endof
+  endcase to #rooms ;
+
 : gen-maze
+  \ update the world size and difficulty
+  1 set-fort-size
+
   \ clear the grid & room data
   grid #grid erase
   roomlist #rooms rooms erase

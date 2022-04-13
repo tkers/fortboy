@@ -6,11 +6,6 @@ require time.fs
   [ _SCRN0 SCRN_VY_B 11 * + ]L [ SCRN_VX_B SCRN_VY_B 11 - * ]L blank
   0 11 at-xy ;
 
-: show-title
-  splash-screen
-  4 14 at-xy ." Press Start!"
-  key drop ;
-
 : show-help
   splash-screen
   1 12 at-xy ." Collect gold and"

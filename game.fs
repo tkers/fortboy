@@ -37,6 +37,5 @@ require ./src/menu.fs
 
 : main
   init
-  show-title reseed
   0 menu-selection !
   begin show-menu again ;

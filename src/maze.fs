@@ -6,8 +6,11 @@ require ./bag.fs
 :m square dup * ;
 
 \ number of rooms to create
-14 constant #rooms
-#rooms square constant #grid
+14 constant #rooms-max
+#rooms-max square constant #grid-max
+
+: #rooms #rooms-max ;
+: #grid #rooms dup * ;
 
 ROM
 struct
@@ -39,7 +42,7 @@ RAM
 
 \ list with push and peek
 variable roomlist-length
-create roomlist #rooms rooms allot
+create roomlist #rooms-max rooms allot
 : next-room-addr roomlist-length @ rooms roomlist + ;
 : next-room-ix roomlist-length @ 1+ ;
 : last-room-ix roomlist-length @ ;
@@ -54,14 +57,14 @@ create roomlist #rooms rooms allot
 : rand-room-ix ( -- u ) roomlist-length @ random 1+ ;
 
 \ occupancy grid to check free space
-CREATE grid #grid allot
+CREATE grid #grid-max allot
 
 : occupy-grid next-room-ix swap c! ;
 : is-occupied? c@ 0 <> ;
 
 : in-range? ( addr -- f )
   dup [ grid 1- ]L >
-  swap [ grid #grid + ]L <
+  swap grid #grid + <
   and ;
 
 : is-free? ( addr -- f )
@@ -146,8 +149,8 @@ CREATE grid #grid allot
   +loop ;
 
 \ used for floodfill
-#rooms STACK visit-stack-1
-#rooms STACK visit-stack-2
+#rooms-max STACK visit-stack-1
+#rooms-max STACK visit-stack-2
 value curr-visit
 value next-visit
 variable curr-depth
@@ -215,7 +218,7 @@ variable curr-depth
 
 \ used for path finding
 variable roompath-length
-create roompath #rooms cells allot
+create roompath #rooms-max cells allot
 
 : check-path-step ( room depth nesw-addr -- room' depth' )
   c@ ?dup 0 <> if
@@ -265,7 +268,7 @@ create roompath #rooms cells allot
   loop nip ;
 
 variable openrooms-length
-create openrooms #rooms cells allot
+create openrooms #rooms-max cells allot
 
 : store-open-rooms
   0 openrooms-length !

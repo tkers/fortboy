@@ -136,16 +136,6 @@ variable inventory
     then
   then ;
 
-: drop-item
-  inventory c@ ?dup 0 <> if
-    snd-drop
-    dup itemid>drop popup
-    current-room @ ix>room room>item c!
-    0 inventory c!
-  else
-    s" You do not have any items right now." popup
-  then ;
-
 : use-item
   inventory c@ ?dup 0= if
     s" You do not have any items right now." popup
@@ -199,7 +189,6 @@ variable inventory
     k-left   of 3 go-room endof
     k-a      of take-item endof
     k-b      of  use-item endof
-    k-select of drop-item endof
   endcase ;
 
 : win?

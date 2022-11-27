@@ -25,3 +25,24 @@ require time.fs
   C4 note 60 ms
   A4 note 60 ms
   G5 note ;
+
+: snd-confirm
+  $53 rNR10 c!
+  $91 rNR11 c!
+  $83 rNR12 c!
+  $aa rNR13 c!
+  $85 rNR14 c! ;
+
+: snd-thud
+  $71 rNR10 c!
+  $8f rNR11 c!
+  $83 rNR12 c!
+  $20 rNR13 c!
+  $85 rNR14 c! ;
+
+: snd-launch
+  $75 rNR10 c!
+  $cc rNR11 c!
+  $38 rNR12 c!
+  $e8 rNR13 c!
+  $83 rNR14 c! ;

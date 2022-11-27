@@ -4,10 +4,12 @@ RAM variable menu-selection
   splash-screen
   5 13 at-xy ." Assembling"
   6 14 at-xy ." Fortress"
+  snd-launch
   menu-selection @ gen-maze
   show-intro run-maze show-outro show-gold ;
 
 : menu-move ( n -- )
+  snd-thud
   menu-selection @ +
   dup 0 < if 3 + then
   dup 2 > if 3 - then
@@ -27,15 +29,16 @@ RAM variable menu-selection
       k-up   of -1 menu-move endof
       k-down of  1 menu-move endof
       k-a    of play-game exit endof
-      k-b    of           exit endof
+      k-b    of snd-thud  exit endof
     endcase
   again ;
 
 : menu-confirm
+  snd-confirm
   menu-selection @ case
     0 of show-size 0 menu-selection ! endof
-    1 of show-help endof
-    2 of show-info endof
+    1 of show-help snd-thud endof
+    2 of show-info snd-thud endof
   endcase ;
 
 : show-menu

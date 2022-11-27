@@ -9,6 +9,11 @@ variable inventory
 : center ( c-addr u -- c-addr u )
   SCRN_X_B over - 2/ spaces ;
 
+: and-or-comma ( x x -- x x )
+  swap 1- swap
+  over 1 = if s"  and " pad append then
+  over 1 > if s" , " pad append then ;
+
 : look-room ( -- )
   current-room @
   dup ix>room
@@ -18,13 +23,13 @@ variable inventory
   dup room>description 2@ pad place
 
   dup room>item c@
-  ?dup 0 <> if
+  ?dup 0<> if
     bl pad cappend
     itemid>look pad append
   then
 
   dup room>gold c@
-  ?dup 0 <> if
+  ?dup 0<> if
     bl pad cappend
     dup 1 = if
       drop
@@ -37,10 +42,10 @@ variable inventory
   then
 
   0 swap
-  dup room>north c@ 0 <> if swap 1+ swap then
-  dup room>east  c@ 0 <> if swap 1+ swap then
-  dup room>south c@ 0 <> if swap 1+ swap then
-  dup room>west  c@ 0 <> if swap 1+ swap then
+  dup room>north c@ 0<> if swap 1+ swap then
+  dup room>east  c@ 0<> if swap 1+ swap then
+  dup room>south c@ 0<> if swap 1+ swap then
+  dup room>west  c@ 0<> if swap 1+ swap then
 
   bl pad cappend
   over 1 = if
@@ -53,29 +58,21 @@ variable inventory
     s" Paths lead to the " pad append
   then
 
-  dup room>north c@ 0 <> if
+  dup room>north c@ 0<> if
     s" North" pad append
-    swap 1- swap
-    over 1 = if s"  and " pad append then
-    over 1 > if s" , " pad append then
+    and-or-comma
   then
-  dup room>east  c@ 0 <> if
+  dup room>east  c@ 0<> if
     s" East"  pad append
-    swap 1- swap
-    over 1 = if s"  and " pad append then
-    over 1 > if s" , " pad append then
+    and-or-comma
   then
-  dup room>south c@ 0 <> if
+  dup room>south c@ 0<> if
     s" South" pad append
-    swap 1- swap
-    over 1 = if s"  and " pad append then
-    over 1 > if s" , " pad append then
+    and-or-comma
   then
-  dup room>west  c@ 0 <> if
+  dup room>west  c@ 0<> if
     s" West"  pad append
-    swap 1- swap
-    over 1 = if s"  and " pad append then
-    over 1 > if s" , " pad append then
+    \ and-or-comma
   then
   nip
   [char] . pad cappend
@@ -86,13 +83,13 @@ variable inventory
 : go-room ( dir -- )
   current-room @ ix>room swap
   2dup room>lock-nesw c@
-  ?dup 0 <> if
+  ?dup 0<> if
     snd-block
     itemid>need popup
     2drop exit
   then
   room>nesw c@
-  ?dup 0 <> if
+  ?dup 0<> if
     current-room ! page
   then ;
 
@@ -114,9 +111,9 @@ variable inventory
 
 : take-item ( -- )
   current-room @ ix>room room>item
-  dup c@ ?dup 0 <> if
+  dup c@ ?dup 0<> if
     inventory c@ tuck
-    ?dup 0 <> if
+    ?dup 0<> if
       snd-drop
       itemid>drop popup
     then
@@ -126,7 +123,7 @@ variable inventory
     swap c! \ switch inventory<>room
   else
     drop current-room @ ix>room room>gold
-    dup c@ ?dup 0 <> if
+    dup c@ ?dup 0<> if
       s" You take the gold coin" pad place
       dup 1 > if [char] s pad cappend then [char] . pad cappend
       snd-take
@@ -150,7 +147,7 @@ variable inventory
   then ;
 
 : use-item
-  inventory c@ ?dup 0 = if
+  inventory c@ ?dup 0= if
     s" You do not have any items right now." popup
     exit
   then

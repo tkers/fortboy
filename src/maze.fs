@@ -63,7 +63,7 @@ create roomlist #rooms-max rooms allot
 CREATE grid #grid-max allot
 
 : occupy-grid next-room-ix swap c! ;
-: is-occupied? c@ 0 <> ;
+: is-occupied? c@ 0<> ;
 
 : in-range? ( addr -- f )
   dup [ grid 1- ]L >
@@ -179,23 +179,17 @@ variable curr-depth
     while
       curr-visit pop
       ix>room
-      dup room>aux @ 0 = if
+      dup room>aux @ 0= if
         \ set depth
         dup room>aux curr-depth @ swap !
 
-        \ add next rooms (only if not locked)
-        dup room>lock-north c@ 0 = if
-          dup room>north c@ ?dup 0 <> if next-visit push then
-        then
-        dup room>lock-east c@ 0 = if
-          dup room>east  c@ ?dup 0 <> if next-visit push then
-        then
-        dup room>lock-south c@ 0 = if
-          dup room>south c@ ?dup 0 <> if next-visit push then
-        then
-        dup room>lock-west c@ 0 = if
-          dup room>west  c@ ?dup 0 <> if next-visit push then
-        then
+        \ add connected rooms (only if not locked)
+        4 0 DO
+          dup I
+          2dup room>lock-nesw c@ 0= if
+            room>nesw c@ ?dup 0<> if next-visit push then
+          else 2drop then
+        LOOP
       then
       drop
     repeat
@@ -224,7 +218,7 @@ variable roompath-length
 create roompath #rooms-max cells allot
 
 : check-path-step ( room depth nesw-addr -- room' depth' )
-  c@ ?dup 0 <> if
+  c@ ?dup 0<> if
     ix>room
     dup room>aux @
     ?dup 0= if drop else

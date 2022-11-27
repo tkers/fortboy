@@ -21,6 +21,11 @@
   [char] " [host] parse [target]
   tuck mem, swap ;
 
+\ this adds a bit of overhead in cycles
+\ but reduces duplicated CALLs in the ROM
+\ saving some 170 bytes of space
+: (end-strings:does>) swap 2* cells + 2@ ;
+
 :m end-strings: ( u "name" -- )
   create 0 [host] do [target] , , [host] loop [target]
-  does> swap 2* cells + 2@ ;
+  does> (end-strings:does>) ;

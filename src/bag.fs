@@ -14,7 +14,7 @@
 :m bag: create 1+ cells allot ;
 
 \ : empty-bag ( bag -- ) 0 ! ;
-: bag-empty? ( bag -- f ) @ 0 = ;
+: bag-empty? ( bag -- f ) @ 0= ;
 
 : fill-bag ( u bag -- )
   2dup !

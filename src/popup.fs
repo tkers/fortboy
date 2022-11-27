@@ -24,7 +24,7 @@ RAM
   begin
     dup 14 >
   while
-    over 14
+    over 15
     begin 1- 2dup + c@ bl = until
     dup 1+ >r
     begin 1- 2dup + c@ bl <> until

@@ -15,8 +15,7 @@
     else
       s" and the " pad append
       pad #append
-      bl pad cappend
-      s" gold coins in your pocket are " pad append
+      s"  gold coins in your pocket are " pad append
     then
   then
   s" the only proof that any of it was real in the first place. Or was it? The memories are already starting to fade..." pad append

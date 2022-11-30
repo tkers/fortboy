@@ -9,25 +9,31 @@ variable inventory
 : center ( c-addr u -- c-addr u )
   SCRN_X_B over - 2/ spaces ;
 
-: and-or-comma ( x x -- x x )
-  swap 1- swap
-  over 1 = if s"  and " pad append then
-  over 1 > if s" , " pad append then ;
+: and-or-comma ( num -- num' )
+  1-
+  dup 1 = if s"  and " pad append then
+  dup 1 > if s" , "    pad append then ;
+
+: inc-if-door ( u nesw-addr -- u' )
+  c@ 0<> if 1+ then ;
 
 : look-room ( -- )
   current-room @
   dup ix>room
 
+  \ room title and description
   dup room>name        2@ center type cr
   =====
   dup room>description 2@ pad place
 
+  \ append item description
   dup room>item c@
   ?dup 0<> if
     bl pad cappend
     itemid>look pad append
   then
 
+  \ append gold description
   dup room>gold c@
   ?dup 0<> if
     bl pad cappend
@@ -41,14 +47,15 @@ variable inventory
     then
   then
 
-  0 swap
-  dup room>north c@ 0<> if swap 1+ swap then
-  dup room>east  c@ 0<> if swap 1+ swap then
-  dup room>south c@ 0<> if swap 1+ swap then
-  dup room>west  c@ 0<> if swap 1+ swap then
+  \ append doors descriptions
+  0
+  over room>north inc-if-door
+  over room>east  inc-if-door
+  over room>south inc-if-door
+  over room>west  inc-if-door
 
   bl pad cappend
-  over 1 = if
+  dup 1 = if
     rot dup 1 = if
       s" A path is leading to the " pad append
     else
@@ -58,23 +65,23 @@ variable inventory
     s" Paths lead to the " pad append
   then
 
-  dup room>north c@ 0<> if
+  over room>north c@ 0<> if
     s" North" pad append
     and-or-comma
   then
-  dup room>east  c@ 0<> if
+  over room>east  c@ 0<> if
     s" East"  pad append
     and-or-comma
   then
-  dup room>south c@ 0<> if
+  over room>south c@ 0<> if
     s" South" pad append
     and-or-comma
   then
-  dup room>west  c@ 0<> if
+  over room>west  c@ 0<> if
     s" West"  pad append
     \ and-or-comma
   then
-  nip
+  drop
   [char] . pad cappend
 
   pad count .wrapped
@@ -103,11 +110,16 @@ variable inventory
 
 : matches-any-lock? ( room item -- f )
   over room>lock-north c@ over = >r
-  over room>lock-east c@ over = >r
+  over room>lock-east  c@ over = >r
   over room>lock-south c@ over = >r
-  over room>lock-west c@ over = >r
+  over room>lock-west  c@ over = >r
   2drop
   r> r> r> r> or or or ;
+
+: try-unlock ( room item lock-addr -- room item )
+  over over c@ = if
+    0 swap c!
+  else drop then ;
 
 : take-item ( -- )
   current-room @ ix>room room>item
@@ -145,34 +157,26 @@ variable inventory
   current-room @ ix>room has-no-locks? if
     drop \ todo use item name somehow?
     s" You scratch your head. Your item is of no use here." popup exit
+    \ s" You scratch your head. " pad place
+    \ itemid>name pad append
+    \ s"  is of no use here." pad append
+    \ pad count popup exit
   then
 
   current-room @ ix>room over matches-any-lock? invert if
     drop \ todo use item name somehow?
     s" Your item does not help you here. Let's keep looking!" popup exit
+    \ itemid>name pad place
+    \ s"  does not help you here. Let's keep looking!" pad append
+    \ pad count popup exit
   then
 
   current-room @ ix>room swap \ room item
 
-  over room>lock-north c@
-  over = if
-    over room>lock-north 0 swap c!
-  then
-
-  over room>lock-east c@
-  over = if
-    over room>lock-east 0 swap c!
-  then
-
-  over room>lock-south c@
-  over = if
-    over room>lock-south 0 swap c!
-  then
-
-  over room>lock-west c@
-  over = if
-    over room>lock-west 0 swap c!
-  then
+  over room>lock-north try-unlock
+  over room>lock-east  try-unlock
+  over room>lock-south try-unlock
+  over room>lock-west  try-unlock
 
   nip
 
@@ -199,8 +203,6 @@ variable inventory
   0 gold-coins !
   0 inventory c!
   begin
-    page
-    win? if exit then
-    look-room
+    page look-room
     key key>action
-  again ;
+  win? until ;

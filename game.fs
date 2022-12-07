@@ -2,6 +2,7 @@ title: FortBoy
 makercode: TJ
 
 require ./src/textmachine-font.fs
+require ./src/tiles.fs
 
 require term.fs
 require random.fs
@@ -31,6 +32,7 @@ require ./src/menu.fs
 
 : init
   install-font
+  install-2bit-tiles
   init-term
   init-input
   $7DFB dup seed ! initial-seed ! ;

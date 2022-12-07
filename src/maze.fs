@@ -100,9 +100,9 @@ CREATE grid #grid-max allot
 : room>lock-nesw ( room dir -- lock-addr )
   case
     0 of room>lock-north endof
-    1 of room>lock-east endof
+    1 of room>lock-east  endof
     2 of room>lock-south endof
-    3 of room>lock-west endof
+    3 of room>lock-west  endof
   endcase ;
 
 : flip-nesw ( u -- u )
@@ -116,9 +116,9 @@ CREATE grid #grid-max allot
 : room>nesw ( room dir -- nesw-addr )
   case
     0 of room>north endof
-    1 of room>east endof
+    1 of room>east  endof
     2 of room>south endof
-    3 of room>west endof
+    3 of room>west  endof
   endcase ;
 
 : dig-tunnel  ( ix1 dir ix2 -- )
@@ -227,7 +227,7 @@ create roompath #rooms-max cells allot
     then
   then ;
 
-\ find path from start to finish
+\ find path from start(1) to target
 : store-main-path ( tgt-room -- )
   roompath #rooms cells erase
   1 roompath-length !
@@ -251,19 +251,6 @@ create roompath #rooms-max cells allot
   -1 roompath-length +! \ remove starting room
   drop drop ;
 
-\ : debug:show-main-path
-\   roompath-length @ 0 do
-\     roompath I cells + @ room>name 2@ type cr
-\   loop ;
-
-: in-main-path? ( x -- f )
-  false
-  #rooms 0 do
-    over
-    roompath I cells + @
-    = or
-  loop nip ;
-
 variable openrooms-length
 create openrooms #rooms-max cells allot
 
@@ -271,8 +258,8 @@ create openrooms #rooms-max cells allot
   0 openrooms-length !
   openrooms #rooms cells erase
 
-  #rooms 1+ 1 do
-    I ix>room room>aux @ 0 <> \ reachable (depth <>0 )
+  #rooms 1+ 2 do \ skip starting room
+    I ix>room room>aux @ 0<> \ reachable (depth <>0 )
     I ix>room room>item c@ 0= \ empty ( item 0= )
     and if
       I ix>room
@@ -281,42 +268,48 @@ create openrooms #rooms-max cells allot
     then
   loop ;
 
-\ : debug:show-open-rooms
-\   openrooms-length @ 0 do
-\     openrooms I cells + @ room>name 2@ type cr
-\   loop ;
+: comp-room-depth ( room1 room2 -- f )
+  room>aux @ swap room>aux @ < ;
+
+: sort-open-rooms ( -- )
+  openrooms openrooms-length @ ( addr len )
+  dup 1 ?do
+    2dup I - cells bounds do
+      I 2@ comp-room-depth if I 2@ swap I 2! then
+    cell +loop
+  loop 2drop ;
 
 : random-open-room
-  openrooms-length @ 1- random 1+ \ exclude start
+  openrooms-length @ 2/ 1+ random
   cells openrooms + @ ;
 
-: random-room \ ix starts at 1
-  #rooms random 1+ ix>room ;
+: random-room \ ix starts at 1, non-start at 2
+  #rooms 1- random 2 + ix>room ;
 
-: place-lock
+: place-lock ( u -- )
   \ get random room in path
-  roompath-length @ 1- random 1+
+  roompath-length @ 2/ random 1+
   dup     cells roompath + @
   swap 1- cells roompath + @ \ room room+1
   over room>coord @
   swap room>coord @ coords>nesw \ room dir
   room>lock-nesw c! ;
 
-: place-item
+: place-item ( u -- )
   \ add item to any reachable room
   random-open-room
   tuck room>item c!
   store-main-path ;
 
-: place-lock-and-item
+: place-lock-and-item ( -- )
   \ no space to add more locks, skip
   roompath-length @ 2 < if exit then
   item-bag draw-bag 1+ dup
   place-lock
-  erase-depths annotate-depths store-open-rooms
+  erase-depths annotate-depths store-open-rooms sort-open-rooms
   ( n ) place-item ;
 
-: place-gold
+: place-gold ( u -- )
   \ add gold to any non-final and non-item room
   0 begin
     drop random-room

@@ -18,6 +18,26 @@ create tile-chain
 %00000000 c, %11000011 c,
 %00000000 c, %00000000 c,
 %00000000 c, %00000000 c,
+
+create tile-fold
+%11111110 c, %11111110 c,
+%11111100 c, %10000100 c,
+%11111000 c, %10001000 c,
+%11110000 c, %10010010 c,
+%11100000 c, %10100010 c,
+%11000000 c, %11001111 c,
+%10000000 c, %10000000 c,
+%00000000 c, %00100000 c,
+
+create tile-wall
+%00000000 c, %00100000 c,
+%00000000 c, %11111111 c,
+%00000000 c, %00000010 c,
+%00000000 c, %00000010 c,
+%00000000 c, %00000010 c,
+%00000000 c, %11111111 c,
+%00000000 c, %00100000 c,
+%00000000 c, %00100000 c,
 ram
 
 : install-tile ( addr char -- )
@@ -26,4 +46,6 @@ ram
 
 : install-2bit-tiles
   tile-key    9 install-tile
-  tile-chain 15 install-tile ;
+  tile-chain 15 install-tile
+  tile-fold   8 install-tile
+  tile-wall  31 install-tile ;

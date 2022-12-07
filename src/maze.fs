@@ -333,6 +333,15 @@ create openrooms #rooms-max cells allot
     2 of #rooms-max endof
   endcase to #rooms ;
 
+: #locks ( -- )
+  #rooms case
+    #rooms-min of 2 endof
+    #rooms-med of 4 endof
+    #rooms-max of 6 endof
+  endcase ;
+
+10 constant #coins
+
 : gen-maze ( u -- )
   \ update the world size and difficulty
   set-fort-size
@@ -363,17 +372,11 @@ create openrooms #rooms-max cells allot
 
   \ add obstacles and items
   fill-item-bag
-  place-lock-and-item
-  place-lock-and-item
-  place-lock-and-item
-  place-lock-and-item
+  #locks 0 do
+    place-lock-and-item
+  loop
 
   \ sprinkle some gold coins around
-  \ 10 total, spread over 1-7 rooms
-  1 place-gold
-  1 place-gold
-  1 place-gold
-  1 place-gold
-  1 place-gold
-  2 place-gold
-  3 place-gold ;
+  #coins 0 do
+    1 place-gold
+  loop ;

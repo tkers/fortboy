@@ -29,4 +29,6 @@ require time.fs
   2 13 at-xy ." You made it out!" 1200 ms
   3 14 at-xy ." Gold coins: " gold-coins ?
   snd-hooray
+  800 ms
+  2 16 at-xy ." (used " moves ? ." moves)"
   begin key k-start = until ;

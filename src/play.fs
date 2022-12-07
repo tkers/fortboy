@@ -5,6 +5,7 @@ require ./tunes.fs
 variable current-room
 variable gold-coins
 variable inventory
+variable moves
 
 : center ( c-addr u -- c-addr u )
   SCRN_X_B over - 2/ spaces ;
@@ -201,8 +202,10 @@ variable inventory
 : run-maze
   1 current-room !
   0 gold-coins !
+  0 moves !
   0 inventory c!
   begin
     page look-room
     key key>action
+    1 moves +!
   win? until ;

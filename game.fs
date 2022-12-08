@@ -27,6 +27,7 @@ require ./src/divider.fs
 require ./src/maze.fs
 require ./src/play.fs
 require ./src/screens.fs
+require ./src/startup.fs
 require ./src/intro.fs
 require ./src/outro.fs
 require ./src/menu.fs
@@ -41,5 +42,6 @@ require ./src/menu.fs
 : main
   to-white 200 ms
   init
+  scroll-down-animation
   0 menu-selection !
   begin show-menu again ;

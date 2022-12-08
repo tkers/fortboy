@@ -54,7 +54,7 @@ end-strings: state-of-mind[]
 : state-of-mind 6 random state-of-mind[] ;
 
 : show-intro
-  page
+  to-white page
   \ date header
   0 pad !
   30 random 1+ pad #append
@@ -79,7 +79,7 @@ end-strings: state-of-mind[]
   [char] . pad cappend
   bl pad cappend
 
-  pad count .wrapped
+  pad count .wrapped from-white
   key drop partial-page
 
   s" Being a simple " pad place

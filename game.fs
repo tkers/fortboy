@@ -19,6 +19,7 @@ RAM variable initial-seed
 
 require ./src/emit-bytes.fs
 require ./src/string-list.fs
+require ./src/palette-fade.fs
 require ./src/stars.fs
 require ./src/partial-page.fs
 require ./src/wrap.fs
@@ -38,6 +39,7 @@ require ./src/menu.fs
   $7DFB dup seed ! initial-seed ! ;
 
 : main
+  to-white 200 ms
   init
   0 menu-selection !
   begin show-menu again ;

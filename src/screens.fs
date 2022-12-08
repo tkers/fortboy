@@ -25,7 +25,7 @@ require time.fs
   key drop ;
 
 : show-gold
-  splash-screen 800 ms
+  to-black splash-screen 1200 ms from-black
   2 13 at-xy ." You made it out!" 1200 ms
   3 14 at-xy ." Gold coins: " gold-coins ?
   snd-hooray

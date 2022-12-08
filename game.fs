@@ -9,12 +9,9 @@ require random.fs
 require input.fs
 require gbhw.fs
 
-RAM variable initial-seed
-
 : reseed ( -- )
   seed @ 8 lshift
   rDIV c@ or
-  dup initial-seed !
   seed ! ;
 
 require ./src/emit-bytes.fs
@@ -37,7 +34,7 @@ require ./src/menu.fs
   install-2bit-tiles
   init-term
   init-input
-  $7DFB dup seed ! initial-seed ! ;
+  $7DFB seed ! ;
 
 : main
   to-white 200 ms

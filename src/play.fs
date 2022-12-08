@@ -98,7 +98,10 @@ variable moves
   then
   room>nesw c@
   ?dup 0<> if
-    current-room ! page
+    current-room !
+    snd-confirm
+  else
+    snd-thud
   then ;
 
 : has-no-locks? ( room -- f )
@@ -144,19 +147,21 @@ variable moves
       ( n ) gold-coins +!
       0 swap c!
     else
-      drop
+      drop snd-thud
       s" There is nothing worth taking in this room." popup
     then
   then ;
 
 : use-item
   inventory c@ ?dup 0= if
+    snd-thud
     s" You do not have any items right now." popup
     exit
   then
 
   current-room @ ix>room has-no-locks? if
     drop \ todo use item name somehow?
+    snd-thud
     s" You scratch your head. Your item is of no use here." popup exit
     \ s" You scratch your head. " pad place
     \ itemid>name pad append
@@ -166,6 +171,7 @@ variable moves
 
   current-room @ ix>room over matches-any-lock? invert if
     drop \ todo use item name somehow?
+    snd-thud
     s" Your item does not help you here. Let's keep looking!" popup exit
     \ itemid>name pad place
     \ s"  does not help you here. Let's keep looking!" pad append

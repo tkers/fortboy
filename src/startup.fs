@@ -22,6 +22,9 @@ ram
   144 rSCY c!
 
   splash-screen
+  8 13 at-xy ." Play"
+  8 14 at-xy ." Help"
+  8 15 at-xy ." Info"
   0 18 at-xy offscreen-stars offscreen-stars-len type
 
   from-black 800 ms

@@ -20,8 +20,8 @@ RAM variable menu-selection
 
 : show-size
   1 menu-selection !
+  splash-screen
   begin
-    splash-screen
     6 13 at-xy 0 .caret ." Humble"
     6 14 at-xy 1 .caret ." Common"
     6 15 at-xy 2 .caret ." Mighty"
@@ -42,12 +42,11 @@ RAM variable menu-selection
   endcase ;
 
 : show-menu
-  splash-screen
   7 13 at-xy 0 .caret ." Play"
   7 14 at-xy 1 .caret ." Help"
   7 15 at-xy 2 .caret ." Info"
   key reseed case
     k-up   of -1 menu-move endof
     k-down of  1 menu-move endof
-    k-a    of menu-confirm endof
+    k-a    of menu-confirm splash-screen endof
   endcase ;

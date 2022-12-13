@@ -94,14 +94,14 @@ variable moves
   ?dup 0<> if
     snd-block
     itemid>need popup
-    2drop exit
+    2drop true exit
   then
   room>nesw c@
   ?dup 0<> if
     current-room !
-    snd-confirm
+    snd-confirm true to-white
   else
-    snd-thud
+    snd-thud false
   then ;
 
 : has-no-locks? ( room -- f )
@@ -156,13 +156,14 @@ variable moves
   inventory c@ ?dup 0= if
     snd-thud
     s" You do not have any items right now." popup
-    exit
+    true exit
   then
 
   current-room @ ix>room has-no-locks? if
     drop \ todo use item name somehow?
     snd-thud
-    s" You scratch your head. Your item is of no use here." popup exit
+    s" You scratch your head. Your item is of no use here." popup
+    true exit
     \ s" You scratch your head. " pad place
     \ itemid>name pad append
     \ s"  is of no use here." pad append
@@ -172,7 +173,8 @@ variable moves
   current-room @ ix>room over matches-any-lock? invert if
     drop \ todo use item name somehow?
     snd-thud
-    s" Your item does not help you here. Let's keep looking!" popup exit
+    s" Your item does not help you here. Let's keep looking!" popup
+    true exit
     \ itemid>name pad place
     \ s"  does not help you here. Let's keep looking!" pad append
     \ pad count popup exit
@@ -190,7 +192,8 @@ variable moves
   0 inventory c!
 
   snd-unlock
-  itemid>use popup ;
+  itemid>use popup
+  true ;
 
 : key>action
   case
@@ -198,8 +201,9 @@ variable moves
     k-right  of 1 go-room endof
     k-down   of 2 go-room endof
     k-left   of 3 go-room endof
-    k-a      of take-item endof
+    k-a      of take-item true endof
     k-b      of  use-item endof
+    false swap
   endcase ;
 
 : win?
@@ -211,7 +215,7 @@ variable moves
   0 moves !
   0 inventory c!
   begin
-    page look-room
-    key key>action
+    page look-room from-white
+    begin key key>action until
     1 moves +!
   win? until ;

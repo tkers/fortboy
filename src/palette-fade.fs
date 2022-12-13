@@ -11,6 +11,9 @@ require time.fs
   %10100100 rBGP v! 60 ms
   %11100100 rBGP v! ;
 
+: ?from-white
+  rBGP c@ 0= if from-white then ;
+
 : to-black
   %01010101 rBGP v! 60 ms
   %10101010 rBGP v! 60 ms

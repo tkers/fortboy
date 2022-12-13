@@ -80,11 +80,11 @@ end-strings: state-of-mind[]
   bl pad cappend
 
   pad count .wrapped from-white
-  key drop partial-page
+  key drop to-white partial-page
 
   s" Being a simple " pad place
   profession pad append
   s" , you have no reason to be in a strange place like this. Better take a look around and unravel this mystery." pad append
   pad count .wrapped cr
   s" Be brave, unlikely hero. Adventure awaits!" .wrapped
-  key drop ;
+  from-white key drop to-white ;

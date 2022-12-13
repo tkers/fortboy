@@ -17,7 +17,6 @@ here popup-frame - constant popup-frame-size
 RAM
 
 : .frame
-  _SCRN0 [ SCRN_VX_B SCRN_VY_B * ]L 31 fill
   popup-frame popup-frame-size 0 3 at-xy type
   0 4 at-xy ;
 
@@ -32,8 +31,12 @@ RAM
     popup-indent 3 type 1+ type cr
     r> /string
     cursor-y @ 14 = if
-      key drop .frame
+      ?from-white key drop .frame
     then
   repeat popup-indent 3 type type ;
 
-: popup ( c-addr u -- ) .frame .tiny key drop ;
+: popup ( c-addr u -- )
+  to-white
+  _SCRN0 [ SCRN_VX_B SCRN_VY_B * ]L 31 fill
+  .frame .tiny ?from-white
+  key drop to-white ;

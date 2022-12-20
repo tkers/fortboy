@@ -1,6 +1,5 @@
 rom
 here create offscreen-stars
-emit-bytes( 11 11 11 12 11 11 11 11 11 11 11 11 11 11 11 12 11 11 11 11  0  0  0  0  0  0  0  0  0  0  0  0 )
 emit-bytes( 11 11 11 11 11 11 11 13 11 11 11 11 11 11 11 11 11 11 11 11  0  0  0  0  0  0  0  0  0  0  0  0 )
 emit-bytes( 11 11 11 11 11 11 11 11 11 14 11 11 11 11 11 11 11 11 11 11  0  0  0  0  0  0  0  0  0  0  0  0 )
 emit-bytes( 12 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 13 11 11 11  0  0  0  0  0  0  0  0  0  0  0  0 )
@@ -19,13 +18,13 @@ ram
 
 : scroll-down-animation
   to-black 200 ms
-  144 rSCY c!
+  152 rSCY c!
 
   splash-screen
   8 13 at-xy ." Play"
   8 14 at-xy ." Help"
   8 15 at-xy ." Info"
-  0 18 at-xy offscreen-stars offscreen-stars-len type
+  0 19 at-xy offscreen-stars offscreen-stars-len type
 
-  from-black 800 ms
-  257 144 DO 12 ms I rSCY c! LOOP ;
+  from-black 600 ms
+  257 152 DO 12 ms I rSCY c! LOOP ;

@@ -19,7 +19,7 @@ here A/B - constant A/B-len
   3 13 at-xy ." escape the fort!"
   6 15 at-xy ." [+]Walk"
   3 16 at-xy A/B A/B-len type
-  key drop ;
+  wait-a/b ;
 
 : show-info
   splash-screen
@@ -27,7 +27,7 @@ here A/B - constant A/B-len
   2 13 at-xy ." by Tijn & Jasmin"
   1 15 at-xy ." Font by @Polyducks"
   1 16 at-xy ." Running on GBForth"
-  key drop ;
+  wait-a/b ;
 
 : show-gold
   to-black splash-screen 1200 ms from-black

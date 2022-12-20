@@ -108,7 +108,7 @@ end-strings: back-home[]
   pad count center type cr
 
   from-white
-  key drop to-white partial-page
+  wait-a/b to-white partial-page
 
   s" Being a simple " pad place
   profession pad append
@@ -118,4 +118,4 @@ end-strings: back-home[]
   back-home pad append s"  at once! Better take a look around and unravel this mystery." pad append
   pad count .wrapped cr
   s" Be brave, unlikely hero. Adventure awaits!" .wrapped
-  from-white key drop to-white ;
+  from-white wait-a/b to-white ;

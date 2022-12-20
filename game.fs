@@ -14,6 +14,9 @@ require gbhw.fs
   rDIV c@ or
   seed ! ;
 
+: wait-a/b
+  begin key [ k-a k-b or ]L and until ;
+
 require ./src/emit-bytes.fs
 require ./src/string-list.fs
 require ./src/palette-fade.fs

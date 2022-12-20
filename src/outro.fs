@@ -22,4 +22,4 @@
   s" the only proof that any of it was real in the first place. Or was it? The memories are already starting to fade..." pad append
   pad count .wrapped
   from-white
-  key drop ;
+  wait-a/b ;

@@ -31,7 +31,7 @@ RAM
     popup-indent 3 type 1+ type cr
     r> /string
     cursor-y @ 14 = if
-      ?from-white key drop .frame
+      ?from-white wait-a/b .frame
     then
   repeat popup-indent 3 type type ;
 
@@ -39,4 +39,4 @@ RAM
   to-white
   _SCRN0 [ SCRN_VX_B SCRN_VY_B * ]L 31 fill
   .frame .tiny ?from-white
-  key drop to-white ;
+  wait-a/b to-white ;

@@ -1,14 +1,14 @@
 RAM
 
 \ bag to draw random room ids from
-24 bag: room-bag
-: fill-room-bag 24 room-bag fill-bag ;
+32 bag: room-bag
+: fill-room-bag 32 room-bag fill-bag ;
 
 ROM
 
 start-strings
   -" Cellar"
-  -" Icey Room"
+  -" Infirmary"
   -" Library"
   -" Observatory"
   -" Treasury"
@@ -31,11 +31,19 @@ start-strings
   -" Dungeon"
   -" Courtyard"
   -" Nursery"
+  -" Owlery"
+  -" Watchtower"
+  -" Stables"
+  -" Solar"
+  -" Kitchens"
+  -" Cabinets"
+  -" Buttery"
+  -" Oratory"
 end-strings: roomid>name
 
 start-strings
   -" The sound of bubbling reaches your ears. You see a cauldron in the middle of the room, surrounded by herbs and bones of creatures you've never seen before."
-  -" A shiver runs along your spine as the cold wind sweeps through a room completely covered in ice. You nearly slip on the surface, but manage to regain your balance."
+  -" Empty beds line the walls, their sheets ruffled and stained. Near the entrance, rusted instruments lay scattered on a forgotten operating table... Are those blood stains?"
   -" Piles and piles of books cover every last corner of the library. If only you had time to sit in the armchair and dive into the adventures hidden in the dusty pages..."
   -" The sun, the moon, and every last planet of our solar system greet you as the observatory opens before your eyes. Even the ceiling sparkles with a thousand stars."
   -" You squint your eyes as you get blinded by the sudden brightness of the golden walls around you, adorned by thousands of gemstones."
@@ -58,4 +66,12 @@ start-strings
   -" Clattering chains hang from the ceiling, and the floor beneath feels sticky with something red. People should be more careful when carrying jars of jam."
   -" Deep green vines climb along an alluring sculpture, its surface tainted grey from the years spent outside. All around her, roses of red and pink bloom in their full glory."
   -" Sudden goosebumps run along your skin, and you quickly uncover the cause: the doll in the middle of the room is keeping an eye on each of your steps. No, thank you!"
+  -" Soft hooting of owls, grey and brown and white, drown out all other sounds. It is almost comforting up here, and you fight the urge to curl up on the hay for a nap."
+  -" From here, you can see to the furthest ends of the realm. You think you hear an eerie howl coming from the tree line, but by the time you look to see it, it's already gone."
+  -" Four horses, bigger than any you’ve ever seen, stomp their hooved feet on the muddy ground as you enter the flimsy stables. If only you had some carrots with you..."
+  -" You enter a cosy room decorated with beautiful tapestries. You wish you could take a small break here... The fireplace and furs sure look inviting."
+  -" You nearly bump into a clutter of pots, pans, and kettles as you enter the room. The smell of venison stew makes your stomach rumble, yet the pots all seem empty."
+  -" You enter a tidy room furnished with books and decorative woodwork. On a desk across from you, an old book seems to be flipping pages on its own."
+  -" Barrels stacked high against the walls remind you of the dryness of your tongue. Your steps rushed, you uncork a butt of beer and cherish the taste of the golden liquid."
+  -" Artwork of deities you are unfamiliar with covers the walls, the sight breathtaking. The altar seems to be calling for you, sending a shiver down your spine."
 end-strings: roomid>desc

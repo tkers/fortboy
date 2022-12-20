@@ -76,7 +76,8 @@ end-strings: back-home[]
 : back-home 6 random back-home[] ;
 
 : show-intro
-  to-white page
+  85 0 DO 12 ms I rSCY c! LOOP
+  200 ms to-white page 0 rSCY c!
 
   \ date header
   0 pad !

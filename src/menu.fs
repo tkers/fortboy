@@ -1,11 +1,12 @@
 RAM variable menu-selection
 
 : play-game
+  snd-confirm
   splash-screen
   5 13 at-xy ." Assembling"
   6 14 at-xy ." Fortress"
-  snd-launch
   menu-selection @ gen-maze
+  snd-launch
   show-intro run-maze show-outro show-gold ;
 
 : menu-move ( n -- )

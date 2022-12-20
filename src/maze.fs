@@ -2,17 +2,27 @@ require struct.fs
 require stack.fs
 require ./bag.fs
 
+\ the current world size
+RAM value #rooms
+
+\ number of rooms to create
+8  1+ constant #rooms-min
+16 1+ constant #rooms-med
+28 1+ constant #rooms-max
+
+: #locks ( -- )
+  #rooms case
+    #rooms-min of 2 endof
+    #rooms-med of 4 endof
+    #rooms-max of 8 endof
+  endcase ;
+
+10 constant #coins
+
 \ utils
 :m square dup * ;
 
-\ number of rooms to create
- 8 constant #rooms-min
-14 constant #rooms-med
-20 constant #rooms-max
 #rooms-max square constant #grid-max
-
-\ the current world size
-RAM value #rooms
 : #grid #rooms dup * ;
 
 ROM
@@ -325,15 +335,6 @@ create openrooms #rooms-max cells allot
     1 of #rooms-med endof
     2 of #rooms-max endof
   endcase to #rooms ;
-
-: #locks ( -- )
-  #rooms case
-    #rooms-min of 2 endof
-    #rooms-med of 4 endof
-    #rooms-max of 6 endof
-  endcase ;
-
-10 constant #coins
 
 : gen-maze ( u -- )
   \ update the world size and difficulty

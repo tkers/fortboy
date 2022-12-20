@@ -24,7 +24,7 @@ start-strings
   -" deep frown"
   -" soft gasp"
   -" big yawn"
-  -" small shiver"
+  -" shiver"
   -" flinch"
 end-strings: state-of-being[]
 
@@ -35,7 +35,7 @@ start-strings
   -" vast and daunting"
   -" dark and petrifying"
   -" gloomy and menacing"
-  -" ill-lit and cold"
+  -" cold and ill-lit"
   -" sinister and cobwebbed"
   -" dusty and bleak"
 end-strings: atmosphere[]
@@ -43,7 +43,7 @@ end-strings: atmosphere[]
 : atmosphere 7 random atmosphere[] ;
 
 start-strings
-  -" eye lids feel heavy"
+  -" eyelids feel heavy"
   -" vision is blurred"
   -" thoughts are clouded"
   -" head feels empty"

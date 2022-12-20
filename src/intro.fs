@@ -1,5 +1,7 @@
 require ./hero.fs
 
+RAM create fname 30 chars allot
+
 ROM
 
 start-strings
@@ -103,10 +105,11 @@ end-strings: back-home[]
 
   cursor-y @ 15 < if cr then
 
-  first-name center type cr
+  first-name fname place
+  fname count center type cr
   last-name-1 pad place
   last-name-2 pad append
-  pad count center type cr
+  pad count center type
 
   from-white
   wait-a/b to-white partial-page
@@ -116,7 +119,13 @@ end-strings: back-home[]
   s" , you have no reason to be in a " pad append
   place-of-being pad append
   s"  place like this. You need to return home to tend to your " pad append
-  back-home pad append s"  at once! Better take a look around and unravel this mystery." pad append
+  back-home pad append s"  at once!" pad append
   pad count .wrapped cr
-  s" Be brave, unlikely hero. Adventure awaits!" .wrapped
+  s" Better take a look around and unravel this mystery." .wrapped cr
+
+  s" Be brave, " pad place
+  fname count pad append
+  s" . Adventure awaits!" pad append
+  pad count .wrapped
+
   from-white wait-a/b to-white ;

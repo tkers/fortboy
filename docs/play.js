@@ -49,7 +49,10 @@ const decodeBytes = (base64) => {
 const initGameboy = (canvas) => {
   const gameboy = new window.Gameboy()
   setRenderTarget(gameboy, canvas)
-  window.addEventListener('keydown', (e) => gameboy.joypad.keyDown(e.keyCode))
+  window.addEventListener('keydown', (e) => {
+    gameboy.joypad.keyDown(e.keyCode)
+    e.preventDefault()
+  })
   window.addEventListener('keyup', (e) => gameboy.joypad.keyUp(e.keyCode))
   return gameboy
 }
